@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_global_utilities.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:59:20 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/21 20:45:38 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:30:51 by dzivanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,14 @@ t_list *ft_copy_env(void)
 		env_var->name = ft_strdup(((t_env_var *)(ptr_env->content))->name);
 		env_var->value = ft_strdup(((t_env_var *)(ptr_env->content))->value);
 		if (ft_lstsize(env_cpy) == 0)
-		{
-			printf("TESTING1\n");
 			ft_lstadd_back(&(env_cpy), ft_lstnew(env_var));
-		}
 		else if (ft_lstsize(env_cpy) == 1)
-		{
-			printf("TESTING2\n");
 			ft_elem_copy1(&env_var, &env_cpy, &ptr_cpy);
-		}
 		else
-		{
-			printf("TESTING3\n");
 			ft_elem_copy(&env_var, &env_cpy, &ptr_cpy);
-		}
 		ptr_env = ptr_env->next;
 	}
-	return(env_cpy);
+	return (env_cpy);
 }
 
 void	ft_last_arg(char **args, pid_t pid)

@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lexor_utils2.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/21 23:16:11 by dzivanov          #+#    #+#             */
+/*   Updated: 2022/02/21 23:16:16 by dzivanov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 /*
 **	@brief Generic function for freeing linked lists
-**	@param t_list **list . Function used for cleaning the linked lists and its content.
+**	@param t_list **list . Function used for cleaning the linked
+**	lists and its content.
 **	@return /
 **	@todo /
 */
@@ -42,9 +55,12 @@ void	add_specialchar_string(t_list **list, char *str)
 }
 
 /*
-**	@brief Function used for handling single and double quotes from the read_line input
-**	@param char *str, char **current_str, char q_char. q_char variable represents Single or Double Quote
-**	@return on success command returns positive integer, on failuler it returns -1.
+**	@brief Function used for handling single and double quotes
+**	from the read_line input
+**	@param char *str, char **current_str, char q_char. q_char variable
+**	represents Single or Double Quote
+**	@return on success command returns positive integer, on
+**	failuler it returns -1.
 **	@todo /
 */
 
@@ -53,34 +69,14 @@ int	q_handler(char *str, char **current_str, char q_char)
 	int	i;
 
 	i = 0;
-	// if (str[i] != '\0')
-	// {
-	// 	free(current_str);
-	// }
-
 	while (str[i] != '\0')
 	{
 		if (str[i] == q_char)
 		{
-			if (FT_LEXOR_COMMENT)
-				printf("at 6-> begin: %d, i:%d, args: %s\n", 0, i , str);
 			*current_str = join2current_str(*current_str, ft_substr(str, 0, i));
 			return (i);
 		}
 		i++;
 	}
 	return (-1);
-}
-
-/*
-**	@brief Function implemented on possible error places.
-**	@param /
-**	@return /
-**	@todo Include this function for error handling in lexor.
-*/
-
-void	errorfun(void)
-{
-	//to be implemented
-	;
 }

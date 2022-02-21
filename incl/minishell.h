@@ -111,6 +111,14 @@ typedef struct s_env_var
 	char	*value;
 }				t_env_var;
 
+typedef struct s_lexor
+{
+	int		i;
+	int		begining;
+	char	last;
+	int		flag;
+}	t_lexor;
+
 extern t_global g_access;
 
 void    ft_free_split(char **split);
@@ -186,6 +194,11 @@ void	ft_lex_space_handler(char **current_str, char *args, int i, int begining);
 void	ft_free_parser(void *parser);
 void	print_list_parse(t_list *el);
 char	*join2current_str(char *current_str, char *add_on);
+int		is_special_char(char ch);
+int		is_space(char ch);
+char	*ft_env_helper(t_env_var *temp_env);
+char	*ft_env_path(void);
+void	ft_comment_helper(int i, char **args);
 
 //UNSET UTILS
 int	ft_validity_setter(char **args, int i, int pid);

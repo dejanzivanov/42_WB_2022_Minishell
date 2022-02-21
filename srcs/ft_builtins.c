@@ -48,9 +48,9 @@ int	minishell_env(char **args, pid_t pid)
 int	minishell_exit(char **args, pid_t pid)
 {
 	int	counter;
-	int	len;
+	// int	len;
 
-	len = 0;
+	// len = 0;
 	ft_set_lasts(args, pid, 0, 1);
 	counter = ((t_command *)ft_lstlast(g_access.parser2exec)->content)->index;
 	if (counter == 0 && pid != 0)
