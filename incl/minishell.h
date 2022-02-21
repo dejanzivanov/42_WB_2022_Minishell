@@ -209,7 +209,8 @@ size_t	ft_strlen_gnl(char *s);
 void	ft_get_PATH(void);
 
 //GLOBAL UTILS
-void	ft_set_lasts(char **args, int pid, int lreturn);
+void	ft_set_lasts(char **args, int pid, int lreturn, int mode);
+void	ft_free_secure(void **s);
 
 
 //pipex

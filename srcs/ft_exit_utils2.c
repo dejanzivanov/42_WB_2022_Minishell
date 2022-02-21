@@ -6,7 +6,7 @@
 /*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 12:46:46 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/21 13:33:35 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/21 15:25:28 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_parent_exiter(int pid, char **args)
 	if (len > 2 && !ft_digit_check(args[1]))
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
-		ft_set_lasts(args, pid, 1);
+		ft_set_lasts(args, pid, 1, 3);
 		return (1);
 	}
 	else if (len == 1)

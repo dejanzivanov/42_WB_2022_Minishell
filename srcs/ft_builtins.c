@@ -1,16 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_builtins.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/21 11:55:30 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/21 11:55:30 by vdragomi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../incl/minishell.h"
+
+// 3:30 PM] Margarete M: Ctrl-D on bash writes an "exit"
+// [3:36 PM] Margarete M: and last_return needs to be passt after leaving minishell like this
+// [3:38 PM] Vlad D: I see that now
+// 3:50 PM] Margarete M: and ctrl-c and ctrl-d should also print a new line
+// 3:50 PM] Margarete M: and ctrl-c and ctrl-d should also print a new line
 
 /**
 	 @brief Bultin command: env.
@@ -21,7 +15,7 @@ int	minishell_env(char **args, pid_t pid)
 {
 	t_list *ptr;
 
-	ft_set_lasts(args, pid, 0);
+	ft_set_lasts(args, pid, 0, 3);
 	if (ft_strncmp(args[0], "env", 3))
 		return (0);
 	ptr = g_access.env;
@@ -56,49 +50,17 @@ int	minishell_env(char **args, pid_t pid)
  */
 int	minishell_exit(char **args, pid_t pid)
 {
-	int i = 0;
 	int counter;
-	// long long int num_arg;
 	int len;
 
-	ft_last_arg(args, pid);
+	len = 0;
+	// ft_last_arg(args, pid);
+	ft_set_lasts(args, pid, 0, 1);
 	counter = ((t_command *)ft_lstlast(g_access.parser2exec)->content)->index;
 	if (counter == 0 && pid != 0)
 		return (ft_parent_exiter(pid, args));
-	else if (counter == 0 && pid == 0)
-	{
-		while (args[i] != NULL)
-			i++;
-		len = i;
-		if (len > 2 && !ft_digit_check(args[1]))
-			ft_exit(1);
-	}
-	else if(counter != 0 && pid == 0)
+	else
 		ft_child_exiter(args);
-		// while (args[i] != NULL)
-		// 	i++;
-		// len = i;
-		// if (len > 2 && !ft_digit_check(args[1]))
-		// 	ft_child_exit(1);
-		// else if (len == 1)
-		// 	ft_child_exit(ft_atoi(g_access.last_return));
-		// else if (!ft_digit_check(args[1]))
-		// {
-		// 	num_arg = ft_atoll(args[1]);
-		// 	if (!((num_arg < 0 && args[1][0] != '-') || \
-		// 		(num_arg > 0 && args[1][0] == '-')))
-		// 	{
-		// 		if (num_arg >=0 && num_arg <= 255)
-		// 			ft_child_exit(num_arg);
-		// 		else if (num_arg > 255)
-		// 			ft_child_exit(num_arg % 256);
-		// 		else if (num_arg < 0)
-		// 			ft_child_exit(256 - ((num_arg * -1) % 256));
-		// 	}
-		// }
-		// else if (len >= 2)
-		// 	ft_child_exit(255);
-		// ft_child_exit(2);
 	return (0);
 }
 
@@ -112,9 +74,10 @@ int minishell_pwd(char **args, pid_t pid)
 	char *buf;
 	int i = 1;
 
-	ft_last_arg(args, pid);
-	free(g_access.last_return);
-	g_access.last_return = ft_itoa(0);
+	// ft_last_arg(args, pid);
+	// free(g_access.last_return);
+	// g_access.last_return = ft_itoa(0);
+	ft_set_lasts(args, pid, 0, 3);
 	if (args[0] == NULL) //in order to prevent compiler errors
 		return (0);
 
@@ -154,11 +117,13 @@ int minishell_export(char **args, pid_t pid)
 		len++;
 	valid = 1;
 
-	free(g_access.last_return);
-	g_access.last_return = ft_itoa(0);
+	// free(g_access.last_return);
+	// g_access.last_return = ft_itoa(0);
+	ft_set_lasts(args, pid, 0, 2);
 	if (args[1] == NULL && pid == 0)
 	{
-		ft_last_arg(args, pid);
+		// ft_last_arg(args, pid);
+		ft_set_lasts(args, pid, 0, 1);
 		return (ft_single_export());
 	}
 	j = 0;
@@ -182,8 +147,9 @@ int minishell_export(char **args, pid_t pid)
 					write(2 , args[i], ft_strlen(args[i]));
 					write(2, "': not a valid identifier\n", 26);
 				}
-				free(g_access.last_return);
-				g_access.last_return = ft_itoa(1);
+				// free(g_access.last_return);
+				// g_access.last_return = ft_itoa(1);
+				ft_set_lasts(args, pid, 1, 2);
 				break;
 				j++;
 			}
@@ -206,7 +172,7 @@ int minishell_export(char **args, pid_t pid)
 		}
 		i++;
 	}
-	ft_last_arg(args, pid);
+	ft_set_lasts(args, pid, 0, 1);
 	return (1);
 }
 
@@ -223,9 +189,10 @@ int minishell_unset(char **args, pid_t pid)
 
 	valid = 1;
 	temp = NULL;
-	ft_last_arg(args, pid);
-	free(g_access.last_return);
-	g_access.last_return = ft_itoa(0);
+	// ft_last_arg(args, pid);
+	// free(g_access.last_return);
+	// g_access.last_return = ft_itoa(0);
+	ft_set_lasts(args, pid, 0, 3);
 	ptr = g_access.env;
 	int len = 0;
 	while (args[len] != 0)
@@ -253,21 +220,15 @@ int minishell_unset(char **args, pid_t pid)
 					write(2, "': not a valid identifier\n", 26);
 
 				}
-				free(g_access.last_return);
-				g_access.last_return = ft_itoa(1);
+				// free(g_access.last_return);
+				// g_access.last_return = ft_itoa(1);
+				ft_set_lasts(args, pid, 1, 2);
 				break;
 				j++;
 			}
 		}
 		if (!ft_strncmp(args[i], "PWD", ft_strlen(args[i])))
-		{
-			if (g_access.pwd != NULL)
-				free(g_access.pwd);
-			g_access.pwd = NULL;
-			// if (g_access.dp != NULL)
-			// 	free(g_access.dp);
-			// g_access.dp = NULL;
-		}
+			ft_free_secure((void *)&g_access.pwd);
 		if (ft_strlen(args[i]) == ft_strlen(((t_env_var*)(ptr->content))->name) - 1 && valid)
 		{
 			if (!ft_strncmp(args[i], ((t_env_var*)(ptr->content))->name, ft_strlen(args[i])))
@@ -278,7 +239,7 @@ int minishell_unset(char **args, pid_t pid)
 					ft_lstdelone(ptr, delone);
 				}
 				else
-					ft_last_arg(args, pid);
+					ft_set_lasts(args, pid, 0, 1);
 			}
 		}
 		while(ptr->next != NULL && valid)
@@ -296,7 +257,8 @@ int minishell_unset(char **args, pid_t pid)
 							ft_lstdelone(temp, delone);
 						}
 						else
-							ft_last_arg(args, pid);
+							// ft_last_arg(args, pid);
+							ft_set_lasts(args, pid, 0, 1);
 						break;
 					}
 					else
@@ -307,7 +269,8 @@ int minishell_unset(char **args, pid_t pid)
 							ptr->next = NULL;
 						}
 						else
-							ft_last_arg(args, pid);
+							// ft_last_arg(args, pid);
+							ft_set_lasts(args, pid, 0, 1);
 						break;
 					}
 				}
