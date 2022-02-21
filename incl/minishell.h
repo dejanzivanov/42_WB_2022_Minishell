@@ -140,7 +140,6 @@ int 	ft_check_symlink(char *path, char *arg, pid_t pid);
 void	ft_update_env(char *to_search, char *to_replace); //check if value finder finds insider env and if not, create a new one; env should not create duplicate env variables;
 char	*env_value_finder(char *name);
 void	delone(void *content);
-void	ft_last_arg(char **args, pid_t pid);
 // ECHO UTILS
 void	echo_print(char **str, int starter, int size, int flag);
 int		echo_flag(char *str);
@@ -187,6 +186,12 @@ void	ft_lex_space_handler(char **current_str, char *args, int i, int begining);
 void	ft_free_parser(void *parser);
 void	print_list_parse(t_list *el);
 char	*join2current_str(char *current_str, char *add_on);
+
+//UNSET UTILS
+int	ft_validity_setter(char **args, int i, int pid);
+int	ft_unsetter(char **args, int i, t_list *ptr,  int pid);
+int	ft_unset_engine(char **args, int i, t_list *ptr,  int pid);
+
 // UTILS
 int		ft_strcmp(char *s1, char *s2);
 void	ft_free_split(char **split);
@@ -210,7 +215,11 @@ void	ft_get_PATH(void);
 
 //GLOBAL UTILS
 void	ft_set_lasts(char **args, int pid, int lreturn, int mode);
-void	ft_free_secure(void **s);
+void	ft_last_arg(char **args, pid_t pid);
+void	ft_elem_copy(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy);
+
+//MEMORY UTILS
+void ft_free_secure(void **s);
 
 
 //pipex
