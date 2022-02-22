@@ -28,3 +28,10 @@ void	ft_update_create_env(char *env, char *value, pid_t pid)
 		free(args[1]);
 }
 
+void ft_set_current_path(char **current_path)
+{
+	if (g_access.dp != NULL)
+		*current_path = ft_strdup(g_access.dp);
+	else
+		ft_set_global_pwd(current_path);
+}
