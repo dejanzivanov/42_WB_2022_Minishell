@@ -6,7 +6,7 @@
 /*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 02:17:49 by dzivanov          #+#    #+#             */
-/*   Updated: 2022/02/22 02:18:53 by dzivanov         ###   ########.fr       */
+/*   Updated: 2022/02/22 16:31:16 by dzivanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ void	ft_env_string_handler(char **args, t_env **env)
 	(*env)->temp1 = ft_substr(*args, (*env)->i + 1, (*env)->j - (*env)->i - 1);
 	(*env)->temp0 = ft_getenv((*env)->temp1);
 	free((*env)->temp1);
-	(*env)->temp0 = env_var_formater((*env)->temp0);
 	(*args)[(*env)->i] = '\0';
 	(*env)->temp1 = ft_strjoin(*args, (*env)->temp0);
-	free((*env)->temp0);
 	(*env)->temp0 = ft_strjoin((*env)->temp1, &((*args)[(*env)->j]));
 	(*env)->i = ft_strlen((*env)->temp1);
 	free(*args);

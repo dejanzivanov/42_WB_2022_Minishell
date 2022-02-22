@@ -73,28 +73,6 @@ char	*ft_getenv(char *str)
 	return ("");
 }
 
-char	*env_var_formater(char *env_var)
-{
-	char	**split_list;
-	char	*out;
-	int		i;
-
-	split_list = ft_split(env_var, FT_SPACE);
-	i = 0;
-	out = NULL;
-	while (split_list[i])
-	{
-		out = join2current_str(out, split_list[i]);
-		if (!(split_list[i + 1] == NULL))
-			out = join2current_str(out, ft_strdup(" "));
-		i++;
-	}
-	free(split_list);
-	if (out == NULL)
-		out = (char *) ft_calloc(sizeof(char), 1);
-	return (out);
-}
-
 /*
 **	env variables can be alphanumberic characters, it can be underscore,
 **	equal  sign can be inside the value, but cant be inside the name
