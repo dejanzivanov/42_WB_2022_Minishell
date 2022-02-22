@@ -168,6 +168,7 @@ char	*ft_handle_cd(char *address, t_list *ptr, pid_t pid);
 int		ft_cd_error_handler(char *str, pid_t pid, char **path, char **temp);
 void	ft_update_dir(char *arg1, char *path);
 void	ft_rtoa_path(char *rel_path, char **abs_path);
+void	ft_cd_simlink(char *abs_path, char *current_path, int pid, int mode);
 
 //env utils
 void	ft_env_quote_handler(char **args, t_env **env);

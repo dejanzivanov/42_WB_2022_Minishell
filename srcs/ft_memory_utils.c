@@ -2,7 +2,7 @@
 
 void ft_free_secure(void **s)
 {
-      if (*s != NULL)
-        free(*s);
-      *s = NULL;
+	if (*s != NULL)
+		free(*s);
+	*s = NULL;
 }

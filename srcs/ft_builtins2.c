@@ -1,6 +1,15 @@
 #include "../incl/minishell.h"
 
-
+static void	ft_cd_free(char **args, char **current_path, char **abs_path, int pid)
+{
+		free(g_access.last_return);
+		g_access.last_return = ft_itoa(1);
+		if (current_path != NULL)
+			free(current_path);
+		if (abs_path != NULL)
+			free(abs_path);
+		ft_last_arg(args, pid);
+}
 static int	ft_err_cd(char **args, int pid)
 {
 	if (args[1] == NULL)
@@ -59,25 +68,6 @@ int minishell_cd(char **args, pid_t pid)
 	dir = opendir(abs_path);
 	if (ft_dir_checker(args, &dir, &abs_path, pid) == 1)
 		return (1);
-	// if (dir == NULL)
-	// {
-	// 	if (g_access.last_return != NULL)
-	// 		free(g_access.last_return);
-	// 	g_access.last_return = ft_itoa(1);
-	// 	if (pid == 0)
-	// 	{
-	// 		write(2, "minishell: cd: ", 15);
-	// 		write(2, args[1], ft_strlen(args[1]));
-	// 		perror(" ");
-			
-	// 	}
-	// 	if (abs_path != NULL)
-	// 		free(abs_path);
-	// 	ft_last_arg(args, pid);
-	// 	return (1);
-	// }
-	// else
-	// 	closedir(dir);
 	if (g_access.dp != NULL)
 		current_path = ft_strdup(g_access.dp);
 	else
@@ -85,48 +75,42 @@ int minishell_cd(char **args, pid_t pid)
 	sym_check = ft_check_symlink(abs_path, args[1], pid);
 	if (sym_check == -1)
 	{
-		free(g_access.last_return);
-		g_access.last_return = ft_itoa(1);
-		if (current_path != NULL)
-			free(current_path);
-		if (abs_path != NULL)
-			free(abs_path);
-		ft_last_arg(args, pid);
+		ft_cd_free(args, &current_path, &abs_path, pid);
 		return (1);
 	}
 	else if (sym_check == SYMLINK)
 	{
-		if (env_value_finder("PWD") == NULL || ft_strlen(env_value_finder("PWD")) == 0)
-			ft_update_create_env("OLDPWD", "", pid);
-		else
-			ft_update_create_env("OLDPWD", current_path, pid);
-		chdir(abs_path);
-		if (g_access.dp != NULL)
-			free(g_access.dp);
-		g_access.dp = ft_strdup(abs_path);
-		
-		if (g_access.pwd != NULL)
-			free(g_access.pwd);
-		g_access.pwd = ft_strdup(abs_path);
-		ft_update_env("PWD", abs_path);
-
+		ft_cd_simlink(abs_path, current_path, pid, 1);
+		// if (env_value_finder("PWD") == NULL || ft_strlen(env_value_finder("PWD")) == 0)
+		// 	ft_update_create_env("OLDPWD", "", pid);
+		// else
+		// 	ft_update_create_env("OLDPWD", current_path, pid);
+		// chdir(abs_path);
+		// if (g_access.dp != NULL)
+		// 	free(g_access.dp);
+		// g_access.dp = ft_strdup(abs_path);
+		// if (g_access.pwd != NULL)
+		// 	free(g_access.pwd);
+		// g_access.pwd = ft_strdup(abs_path);
+		// ft_update_env("PWD", abs_path);
 	}
 	else if (sym_check == NOT_SYMLINK)
 	{
-		if (env_value_finder("PWD") == NULL || ft_strlen(env_value_finder("PWD")) == 0)
-			ft_update_create_env("OLDPWD", "", pid);
-		else
-			ft_update_create_env("OLDPWD", current_path, pid);
-		chdir(abs_path);
-		if (g_access.dp != NULL)
-		{
-			free(g_access.dp);
-			g_access.dp = NULL;
-		}
-		if (g_access.pwd != NULL)
-			free(g_access.pwd);
-		g_access.pwd = ft_strdup(abs_path);
-		ft_update_env("PWD", abs_path);
+		ft_cd_simlink(abs_path, current_path, pid, 2);
+		// if (env_value_finder("PWD") == NULL || ft_strlen(env_value_finder("PWD")) == 0)
+		// 	ft_update_create_env("OLDPWD", "", pid);
+		// else
+		// 	ft_update_create_env("OLDPWD", current_path, pid);
+		// chdir(abs_path);
+		// if (g_access.dp != NULL)
+		// {
+		// 	free(g_access.dp);
+		// 	g_access.dp = NULL;
+		// }
+		// if (g_access.pwd != NULL)
+		// 	free(g_access.pwd);
+		// g_access.pwd = ft_strdup(abs_path);
+		// ft_update_env("PWD", abs_path);
 	}
 	if (abs_path != NULL)
 		free(abs_path);
