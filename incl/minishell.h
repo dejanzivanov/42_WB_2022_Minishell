@@ -189,10 +189,11 @@ int		ft_parent_exiter(int pid, char **args);
 void	ft_child_exiter(char **args);
 
 //EXPORT UTILS
-t_list *ft_copy_env(void);
 void ft_print_sorted_copy(t_list *env_cpy);
-int ft_single_export(void);
+int	ft_single_export(char **args, int pid, int lreturn, int mode);
 int ft_check_existing_env(t_env_var **env_var);
+int ft_export_error_checker(char **args, int i, int pid);
+void ft_add_env_export(char **args, int i, int j, int valid);
 
 // LEXOR UTILS
 char	*join2current_str(char* current_str, char* add_on);
@@ -255,6 +256,7 @@ void	ft_get_PATH(void);
 void	ft_set_lasts(char **args, int pid, int lreturn, int mode);
 void	ft_last_arg(char **args, pid_t pid);
 void	ft_elem_copy(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy);
+t_list	*ft_copy_env(void);
 
 //MEMORY UTILS
 void ft_free_secure(void **s);

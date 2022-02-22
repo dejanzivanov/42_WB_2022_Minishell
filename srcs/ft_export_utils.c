@@ -38,10 +38,11 @@ void	ft_print_sorted_copy(t_list *env_cpy)
 	}
 }
 
-int	ft_single_export(void)
+int	ft_single_export(char **args, int pid, int lreturn, int mode)
 {
 	t_list	*env_cpy;
 
+	ft_set_lasts(args, pid, lreturn, mode);
 	env_cpy = ft_copy_env();
 	ft_print_sorted_copy(env_cpy);
 	if (env_cpy)
@@ -49,25 +50,50 @@ int	ft_single_export(void)
 	return (1);
 }
 
-int	ft_check_existing_env(t_env_var **env_var)
+int	ft_export_error_checker(char **args, int i, int pid)
 {
-	t_list	*ptr;
+	int	j;
 
-	ptr = g_access.env;
-	while (ptr)
+	j = 0;
+	while (args[i][j] != '=' && args[i][j] != '\0')
 	{
-		if (!ft_strncmp((*env_var)->name, ((t_env_var *)(ptr->content))->name, \
-			ft_strlen((*env_var)->name)))
+		if (j == 0 && (args[i][j] == '_' || ft_isalpha(args[i][j])))
+			j++;
+		else if (j > 0 && (args[i][j] == '_' || ft_isalnum(args[i][j])))
+			j++;
+		else
 		{
-			free(((t_env_var *)(ptr->content))->value);
-			((t_env_var *)(ptr->content))->value = ft_strdup((*env_var)->value);
-			free((*env_var)->name);
-			free((*env_var)->value);
-			free(*env_var);
-			*env_var = NULL;
-			return (1);
+			if (pid == 0)
+			{
+				write(2, "minishell: export: `", 20);
+				write(2, args[i], ft_strlen(args[i]));
+				write(2, "': not a valid identifier\n", 26);
+			}
+			ft_set_lasts(args, pid, 1, 2);
+			return (j);
 		}
-		ptr = ptr->next;
 	}
-	return (0);
+	return (j);
+}
+
+void	ft_add_env_export(char **args, int i, int j, int valid)
+{
+	t_env_var	*env_var;
+
+	if ((args[i][j] == '=' || args[i][j] == '\0') && valid)
+	{
+		env_var = (t_env_var *)malloc(sizeof(t_env_var));
+		if (args[i][j] == '=')
+		{
+			env_var->name = ft_substr(args[i], 0, j + 1);
+			env_var->value = ft_strdup(&(args[i][j + 1]));
+		}
+		else
+		{
+			env_var->name = ft_strdup(&(args[i][0]));
+			env_var->value = NULL;
+		}
+		if (!ft_check_existing_env(&env_var))
+			ft_lstadd_back(&(g_access.env), ft_lstnew(env_var));
+	}
 }
