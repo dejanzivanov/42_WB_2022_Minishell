@@ -119,6 +119,16 @@ typedef struct s_lexor
 	int		flag;
 }	t_lexor;
 
+typedef struct s_env
+{
+	int		i;
+	int		j;
+	int		s_quote_flag;
+	int		d_quote_flag;
+	char	*temp1;
+	char	*temp0;
+}	t_env;
+
 extern t_global g_access;
 
 void    ft_free_split(char **split);
@@ -159,6 +169,16 @@ int		ft_cd_error_handler(char *str, pid_t pid, char **path, char **temp);
 void	ft_update_dir(char *arg1, char *path);
 void	ft_rtoa_path(char *rel_path, char **abs_path);
 
+//env utils
+void	ft_env_quote_handler(char **args, t_env **env);
+void	ft_env_string_handler(char **args, t_env **env);
+int		ft_env_char_check(char **args, t_env **env);
+int		ft_env_dollar_handler(char **args, t_env **env);
+void	ft_env_check(char **args);
+void	ft_setup_env_check(t_env **env);
+char	*ft_getenv(char *str);
+char	*env_var_formater(char *env_var);
+
 // EXIT UTILS
 int		ft_digit_check(char *argv);
 long long int	ft_atoll(const char *str);
@@ -181,6 +201,11 @@ void	print_element(void *input);
 void	print_list(t_list *el);
 void	add_string(t_list **list, char	*str);
 int		is_special_char(char ch);
+void	ft_setup_lexor(t_lexor **lex);
+void	ft_lex_handler(t_lexor **lex, char **current_str, char *args);
+void	ft_lex_quote_handler(t_lexor **lex, char **current_str, char *args);
+void	ft_lex_exit(t_lexor **lex, char **current_str, char *args);
+
 
 void	add_specialchar_string(t_list **list, char *str);
 int		q_handler(char *str, char **current_str, char q_char);
