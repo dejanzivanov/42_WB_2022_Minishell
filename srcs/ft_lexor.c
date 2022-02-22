@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lexor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 02:24:08 by dzivanov          #+#    #+#             */
+/*   Updated: 2022/02/22 02:24:08 by dzivanov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 /*
@@ -87,69 +99,13 @@ char	*env_var_formater(char *env_var)
 **	env variables can be alphanumberic characters, it can be underscore,
 **	equal  sign can be inside the value, but cant be inside the name
 */
-
-void	ft_env_check(char **args)
+void	ft_setup_env_check(t_env **env)
 {
-	int		i;
-	int		j;
-	int		s_quote_flag;
-	int		d_quote_flag;
-	char	*temp1;
-	char	*temp0;
-
-	i = 0;
-	j = 0;
-	s_quote_flag = 0;
-	d_quote_flag = 0;
-	while ((*args)[i])
-	{
-		if ((*args)[i] == FT_SINGLE_QUOTE)
-			if (d_quote_flag % 2 == 0)
-				s_quote_flag++;
-		if ((*args)[i] == FT_DOUBLE_QUOTE)
-			if (s_quote_flag % 2 == 0)
-				d_quote_flag++;
-		if ((*args)[i] == FT_DOLLAR_SIGN)
-		{
-			if (s_quote_flag % 2 == 0)
-			{
-				j = i + 1;
-				while (ft_isalnum((*args)[j]) || (*args)[j] == FT_UNDERSCORE)
-				{
-					j++;
-					if (ft_isdigit((*args)[j - 1]))
-						break ;
-				}
-				if (j == i + 1)
-				{
-					if ((*args)[j] == '*' || (*args)[j] == '@' || \
-						(*args)[j] == '#' || (*args)[j] == '?' || \
-						(*args)[j] == '-' || (*args)[j] == '$' || \
-						(*args)[j] == '!')
-						j++;
-					else
-					{
-						i++;
-						continue ;
-					}
-				}
-				temp1 = ft_substr(*args, i + 1, j - i - 1);
-				temp0 = ft_getenv(temp1);
-				free(temp1);
-				temp0 = env_var_formater(temp0);
-				(*args)[i] = '\0';
-				temp1 = ft_strjoin(*args, temp0);
-				free(temp0);
-				temp0 = ft_strjoin(temp1, &((*args)[j]));
-				i = ft_strlen(temp1);
-				free(*args);
-				*args = temp0;
-				free(temp1);
-				i--;
-			}
-		}
-		i++;
-	}
+	*env = ft_calloc(sizeof(t_env), 1);
+	(*env)->i = 0;
+	(*env)->j = 0;
+	(*env)->s_quote_flag = 0;
+	(*env)->d_quote_flag = 0;
 }
 
 int	lexor(void)

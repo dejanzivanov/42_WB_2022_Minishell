@@ -13,7 +13,7 @@ SRC			=  main.c ft_lexor.c ft_parser.c ft_executor.c ft_initiator.c ft_echo_util
 				ft_builtins_utils.c ft_cd_utils.c ft_lexor_utils.c ft_lexor_utils2.c ft_lexor_handlers.c ft_parser_utils.c utils.c \
 				ft_free_linked_list.c ft_exit_utils.c ft_export_utils.c get_next_line.c get_next_line_utils.c ft_init_utils.c \
 				pipex.c helper.c exit_handler.c ft_heredoc.c ft_signal_handler.c ft_get_path_linux.c ft_global_utilities.c \
-				ft_exit_utils2.c ft_unset_utils.c ft_memory_utils.c ft_lexor_utils3.c ft_lexor_handlers2.c
+				ft_exit_utils2.c ft_unset_utils.c ft_memory_utils.c ft_lexor_utils3.c ft_lexor_handlers2.c ft_env_helpers.c
 
 endif
 
@@ -22,7 +22,7 @@ SRC			=  main.c ft_lexor.c ft_parser.c ft_executor.c ft_initiator.c ft_echo_util
 				ft_builtins_utils.c ft_cd_utils.c ft_lexor_utils.c ft_lexor_utils2.c ft_lexor_handlers.c ft_parser_utils.c utils.c \
 				ft_free_linked_list.c ft_exit_utils.c ft_export_utils.c get_next_line.c get_next_line_utils.c ft_init_utils.c \
 				pipex.c helper.c exit_handler.c ft_heredoc.c ft_signal_handler.c ft_get_path_mac.c ft_global_utilities.c \
-				ft_exit_utils2.c ft_unset_utils.c ft_memory_utils.c ft_lexor_utils3.c ft_lexor_handlers2.c
+				ft_exit_utils2.c ft_unset_utils.c ft_memory_utils.c ft_lexor_utils3.c ft_lexor_handlers2.c ft_env_helpers.c
 endif
 
 
