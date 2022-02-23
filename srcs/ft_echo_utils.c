@@ -1,8 +1,8 @@
 #include "../incl/minishell.h"
 
-void echo_print(char **str, int starter, int size, int flag)
+void	echo_print(char **str, int starter, int size, int flag)
 {
-	int i;
+	int	i;
 
 	i = starter;
 	while (i < size)
@@ -18,22 +18,22 @@ void echo_print(char **str, int starter, int size, int flag)
 	}
 }
 
-int echo_flag(char *str)
+int	echo_flag(char *str)
 {
-	int j;
-	int len;
+	int	j;
+	int	len;
 
 	len = ft_strlen(str);
-	if ((str[0] == '-') && len >= 2) //check first if we have the mandatory '-' sign
+	if ((str[0] == '-') && len >= 2)
 	{
-		if (str[1] == 'n' && len >= 2) //check if the next char is 'n'
+		if (str[1] == 'n' && len >= 2)
 		{
 			j = 1;
-			while (j < len && str[j] == 'n') // keep going to pass through all n's
+			while (j < len && str[j] == 'n')
 			{
 				j++;
 			}
-			if (j == len) // check if all elements were n OR if we have some other char different fron n
+			if (j == len)
 				return (1);
 			else
 				return (0);
@@ -43,4 +43,22 @@ int echo_flag(char *str)
 	}
 	else
 		return (0);
+}
+
+void	ft_echo_printer(char **args, int len, int flag)
+{
+	int	i;
+	int	temp;
+
+	i = 1;
+	while (args[i])
+	{
+		temp = echo_flag(args[i]);
+		flag += temp;
+		if (flag == 0 || temp == 0)
+			break ;
+		else
+			i++;
+	}
+	echo_print(args, i, len, flag);
 }

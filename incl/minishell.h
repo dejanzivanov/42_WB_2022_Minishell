@@ -168,9 +168,12 @@ int 	ft_check_symlink(char *path, char *arg, pid_t pid);
 void	ft_update_env(char *to_search, char *to_replace); //check if value finder finds insider env and if not, create a new one; env should not create duplicate env variables;
 char	*env_value_finder(char *name);
 void	delone(void *content);
+
 // ECHO UTILS
 void	echo_print(char **str, int starter, int size, int flag);
 int		echo_flag(char *str);
+void	ft_echo_printer(char **args, int len, int flag);
+
 // CD UTILS
 void	ft_update_create_env(char *env, char *value, pid_t pid);
 void	ft_update_PWD(void);
