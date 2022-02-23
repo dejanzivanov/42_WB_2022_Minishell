@@ -379,24 +379,27 @@ int	parser(void)
 		else
 			ft_free_split(parser->cmd_line);
 	}
-	ret_val = parser->return_flag;
-	ft_free_parse_struct(parser);
+	ret_val = ft_free_parse_struct(parser);
 	return (ret_val);
 }
 
-void ft_free_parse_struct(t_parser *parser)
+int ft_free_parse_struct(t_parser *parser)
 {
+	int ret_value;
+
+	ret_value = parser->return_flag;
 	if (parser->return_flag == 0)
 	{
 		ft_free_lex_list(g_access.lexor2parser);
-		if(parser->lex_element)
+		if (parser->lex_element)
 		{
 			free(parser->lex_element);
 			parser->lex_element = NULL;
 		}
 		g_access.lexor2parser = NULL;
 	}
-	if(parser != NULL)
+	if (parser != NULL)
 		free(parser);
 	parser = NULL;
+	return (ret_value);
 }
