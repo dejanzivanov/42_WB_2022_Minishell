@@ -129,6 +129,16 @@ typedef struct s_env
 	char	*temp0;
 }	t_env;
 
+typedef struct s_struktur
+{
+	int		index_counter;
+	t_list	*lex_element;
+	char	**cmd_line;
+	char	**cmd_line_red;
+	int		cmd_len;
+	int		return_flag;
+} t_struktur;
+
 extern t_global g_access;
 
 void    ft_free_split(char **split);
