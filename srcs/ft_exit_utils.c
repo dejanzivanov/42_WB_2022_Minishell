@@ -21,8 +21,8 @@ int	ft_digit_check(char *argv)
 
 long long int	ft_atoll(const char *str)
 {
-	int	i;
-	int	j;
+	int				i;
+	int				j;
 	long long int	k;
 
 	i = 0;
@@ -44,10 +44,10 @@ long long int	ft_atoll(const char *str)
 	return (k * j);
 }
 
-int ft_get_index()
+int	ft_get_index(void)
 {
-	t_list *ptr;
-	int index;
+	t_list	*ptr;
+	int		index;
 
 	index = 0;
 	ptr = g_access.parser2exec;
@@ -56,10 +56,10 @@ int ft_get_index()
 		index++;
 		ptr = ptr->next;
 	}
-	return(index);
+	return (index);
 }
 
-int ft_exit_error_handler(char *str1, char *str2, char *str3, int exit_value)
+int	ft_exit_error_handler(char *str1, char *str2, char *str3, int exit_value)
 {
 	if (ft_strncmp(str1, "exit\n", ft_strlen(str1)))
 		write(2, str1, ft_strlen(str1));
@@ -72,7 +72,7 @@ int ft_exit_error_handler(char *str1, char *str2, char *str3, int exit_value)
 	exit (exit_value);
 }
 
-void ft_exit(int exit_value)
+void	ft_exit(int exit_value)
 {
 	free_global();
 	close(STDERR_FILENO);

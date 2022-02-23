@@ -20,24 +20,6 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
-// void	ft_free_list(t_list *head)
-// {
-// 	t_list	*tmp;
-
-// 	while (head != NULL)
-// 	{
-// 		tmp = head;
-// 		head = head->next;
-// 		ft_free_split(((t_content *)(tmp->content))->cmd_n_flags);
-// 		if (((t_content *)(tmp->content))->path != NULL)
-// 			free(((t_content *)(tmp->content))->path);
-// 		else
-// 			continue ;
-// 		free(tmp->content);
-// 		free(tmp);
-// 	}
-// }
-
 void	ft_exit_on_error2(char *error_msg)
 {
 	perror(error_msg);

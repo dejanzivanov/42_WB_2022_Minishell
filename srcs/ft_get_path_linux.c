@@ -1,5 +1,23 @@
 #include "../incl/minishell.h"
 
+
+static int	ft_check_pth(t_list *ptr)
+{
+	while(ptr)
+	{
+		if (!ft_strncmp(((t_env_var *)(ptr->content))->name, "PATH=", 5))
+		{
+			if (((t_env_var *)(ptr->content))->value == NULL || ft_strlen(((t_env_var *)(ptr->content))->value) == 0)
+				// break;
+				return (0);
+			else
+				return (1);
+		}
+		ptr = ptr->next;
+	}
+	return (0);
+}
+
 void ft_get_PATH(void)
 {
 	int fd;
@@ -8,17 +26,20 @@ void ft_get_PATH(void)
 	t_env_var *env_var;
 
 	ptr = g_access.env;
-	while(ptr)
-	{
-		if (!ft_strncmp(((t_env_var *)(ptr->content))->name, "PATH=", 5))
-		{
-			if (((t_env_var *)(ptr->content))->value == NULL || ft_strlen(((t_env_var *)(ptr->content))->value) == 0)
-				break;
-			else
-				return;
-		}
-		ptr = ptr->next;
-	}
+	if (ft_check_pth(ptr) == 1)
+		return ;
+	// while(ptr)
+	// {
+	// 	if (!ft_strncmp(((t_env_var *)(ptr->content))->name, "PATH=", 5))
+	// 	{
+	// 		if (((t_env_var *)(ptr->content))->value == NULL || ft_strlen(((t_env_var *)(ptr->content))->value) == 0)
+	// 			break;
+	// 		else
+	// 			return;
+	// 	}
+	// 	ptr = ptr->next;
+	// }
+	printf("PTR = %s\n", ((t_env_var *)(ptr->content))->value);
 	fd = open("/etc/environment", O_RDONLY);
 	s = get_next_line(fd);
 	while (s != NULL)

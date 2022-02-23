@@ -1,5 +1,21 @@
 #include "../incl/minishell.h"
 
+static int	ft_check_path(t_list **ptr)
+{
+	while(*ptr)
+	{
+		if (!ft_strncmp(((t_env_var *)((*ptr)->content))->name, "PATH=", 5))
+		{
+			if (((t_env_var *)((*ptr)->content))->value == NULL || ft_strlen(((t_env_var *)((*ptr)->content))->value) == 0)
+				return (0);
+			else
+				return (1);
+		}
+		*ptr = (*ptr)->next;
+	}
+	return (0);
+}
+
 void ft_get_PATH(void)
 {
 	int fd;
@@ -10,17 +26,8 @@ void ft_get_PATH(void)
 	char *temp;
 
 	ptr = g_access.env;
-	while(ptr)
-	{
-		if (!ft_strncmp(((t_env_var *)(ptr->content))->name, "PATH=", 5))
-		{
-			if (((t_env_var *)(ptr->content))->value == NULL || ft_strlen(((t_env_var *)(ptr->content))->value) == 0)
-				break;
-			else
-				return;
-		}
-		ptr = ptr->next;
-	}
+	if (ft_check_path(&ptr) == 1)
+		return ;
 	fd = open("/etc/paths", O_RDONLY);
 	s = get_next_line(fd);
 	path = ft_strdup("");
@@ -46,14 +53,14 @@ void ft_get_PATH(void)
 	{
 		if (((t_env_var *)(ptr->content))->value != NULL)
 			free(((t_env_var *)(ptr->content))->value);
-		((t_env_var *)(ptr->content))->value = path;
+		((t_env_var *)(ptr->content))->value = ft_strdup(path);
 	}
 	else
 	{
 		env_var = (t_env_var *)malloc(sizeof(t_env_var));
 		env_var->name = ft_strdup("PATH=");
-		env_var->value = path;
+		env_var->value = ft_strdup(path);
 		ft_lstadd_back(&(g_access.env), ft_lstnew(env_var));
 	}
+	free(path);
 }
-
