@@ -206,7 +206,7 @@ void ft_add_command(t_parser **parser)
 	ft_lstadd_back(&(g_access.parser2exec),  (*parser)->executor_element);
 }
 
-int ft_parser_pipe_error_check(t_parser **parser)
+int ft_parser_redirect_error_check(t_parser **parser)
 {
 	if((*parser)->lex_element == NULL)
 	{
@@ -227,7 +227,7 @@ int ft_parser_pipe_error_check(t_parser **parser)
 	return (0);
 }
 
-int ft_parser_last_pipe_element(t_parser **parser)
+int ft_parser_last_redirect_element(t_parser **parser)
 {
 	if(((t_word *)((*parser)->lex_element->content))->type == FT_SPECIAL_CHAR_STRING)
 	{
@@ -244,6 +244,45 @@ int ft_parser_last_pipe_element(t_parser **parser)
 		free((*parser)->cmd_line_red);
 		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
 		return (2);
+	}
+	return (0);
+}
+
+int ft_parser_redirect_handler(t_parser **parser)
+{
+	if (is_redirect(((t_word *)((*parser)->lex_element->content))->address))
+	{
+		(*parser)->cmd_line_red = (char **)ft_calloc(3, sizeof(char *));
+		(*parser)->cmd_line_red[0] = ft_strdup(((t_word *)((*parser)->lex_element->content))->address);
+		(*parser)->lex_element = (*parser)->lex_element->next;
+		if(ft_parser_redirect_error_check(parser) == 2)
+			return (2);
+		if(ft_parser_last_redirect_element(parser) == 2)
+			return (2);
+		ft_add_redirect_command(parser);
+	}
+	return (0);
+}
+
+int ft_pipe_handler(t_parser **parser)
+{
+	if ((*parser)->cmd_len == 0)
+	{
+		(*parser)->return_flag = 2;
+		ft_set_lasts(NULL, 0, 2, 2);
+		write(2, "minishe11: syntax error near unexpected token `|'3\n", 52);
+		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+	}
+	else
+	{
+		(*parser)->lex_element = (*parser)->lex_element->next;
+		if ((*parser)->lex_element == NULL)
+		{
+			(*parser)->return_flag = 2;
+			ft_set_lasts(NULL, 0, 2, 2);
+			write(2, "minishe11: syntax error near unexpected token `|'4\n", 52);
+			error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+		}
 	}
 	return (0);
 }
@@ -267,50 +306,28 @@ int	parser(void)
 				break;
 			if (((t_word *)(parser->lex_element->content))->type == FT_SPECIAL_CHAR_STRING)
 			{
+
 				if (is_redirect(((t_word *)(parser->lex_element->content))->address))
 				{
 					parser->cmd_line_red = (char **)ft_calloc(3, sizeof(char *));
 					parser->cmd_line_red[0] = ft_strdup(((t_word *)(parser->lex_element->content))->address);
 					parser->lex_element = parser->lex_element->next;
-					if(ft_parser_pipe_error_check(&parser) == 2)
+					if(ft_parser_redirect_error_check(&parser) == 2)
 						break;
-					if(ft_parser_last_pipe_element(&parser) == 2)
+					if(ft_parser_last_redirect_element(&parser) == 2)
 						break;
 					ft_add_redirect_command(&parser);
 
 				}
 				else  if (is_pipe(((t_word *)(parser->lex_element->content))->address))
 				{
-					if (parser->cmd_len == 0)
-					{
-						parser->return_flag = 2;
-						if (g_access.last_return != NULL)
-							free(g_access.last_return);
-						g_access.last_return = ft_itoa(2);
-						write(2, "minishe11: syntax error near unexpected token `|'3\n", 52);
-						error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
-					}
-					else
-					{
-						parser->lex_element = parser->lex_element->next;
-						if (parser->lex_element == NULL)
-						{
-							parser->return_flag = 2;
-							if (g_access.last_return != NULL)
-								free(g_access.last_return);
-							g_access.last_return = ft_itoa(2);
-							write(2, "minishe11: syntax error near unexpected token `|'4\n", 52);
-						error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
-						}
-					}
+					ft_pipe_handler(&parser);
 					break ;
 				}
 				else
 				{
 					parser->return_flag = 2;
-					if (g_access.last_return != NULL)
-						free(g_access.last_return);
-					g_access.last_return = ft_itoa(2);
+					ft_set_lasts(NULL, 0, 2, 2);
 					write(2, "minishe11: syntax error near unexpected token'5\n", 49);
 					error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
 					break ;
@@ -321,9 +338,7 @@ int	parser(void)
 			if (parser->cmd_len > PARSER_TABLE_LEN_LIMIT)
 			{
 				parser->return_flag = 2;
-				if (g_access.last_return != NULL)
-					free(g_access.last_return);
-				g_access.last_return = ft_itoa(2);
+				ft_set_lasts(NULL, 0, 2, 2);
 				write(2, "minishe11: argument overflow6\n", 31);
 				error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
 				break;
@@ -342,9 +357,7 @@ int	parser(void)
 			if (parser->index_counter > PIPE_LIMIT)
 			{
 				parser->return_flag = 2;
-				if (g_access.last_return != NULL)
-					free(g_access.last_return);
-				g_access.last_return = ft_itoa(2);
+				ft_set_lasts(NULL, 0, 2, 2);
 				write(2, "minishe11: pipe limit reached7\n", 32);
 				error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
 			}
@@ -352,6 +365,13 @@ int	parser(void)
 		else
 			ft_free_split(parser->cmd_line);
 	}
+	ret_val = parser->return_flag;
+	ft_free_parse_struct(parser);
+	return (ret_val);
+}
+
+void ft_free_parse_struct(t_parser *parser)
+{
 	if (parser->return_flag == 0)
 	{
 		ft_free_lex_list(g_access.lexor2parser);
@@ -362,11 +382,7 @@ int	parser(void)
 		}
 		g_access.lexor2parser = NULL;
 	}
-	if (FT_PARSER_COMMENT)
-		print_list_parse(g_access.parser2exec);
-	ret_val = parser->return_flag;
 	if(parser != NULL)
 		free(parser);
 	parser = NULL;
-	return (ret_val);
 }

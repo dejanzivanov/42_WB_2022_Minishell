@@ -252,7 +252,7 @@ void error_fun(t_list **list, t_list **lexor_list);
 int	ft_validity_setter(char **args, int i, int pid);
 int	ft_unsetter(char **args, int i, t_list *ptr,  int pid);
 int	ft_unset_engine(char **args, int i, t_list *ptr,  int pid);
-
+void ft_free_parse_struct(t_parser *parser);
 // UTILS
 int		ft_strcmp(char *s1, char *s2);
 void	ft_free_split(char **split);
