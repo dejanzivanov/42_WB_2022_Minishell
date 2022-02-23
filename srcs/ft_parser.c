@@ -193,6 +193,19 @@ void ft_add_redirect_command(t_parser **parser)
 	ft_lstadd_back(&(g_access.parser2exec), (*parser)->executor_element);
 }
 
+void ft_add_command(t_parser **parser)
+{
+	(*parser)->cmd = (t_command *)malloc(sizeof(t_command));
+	(*parser)->cmd->comm_table = (*parser)->cmd_line;
+	(*parser)->cmd->path = NULL;
+	(*parser)->cmd->index = (*parser)->index_counter;
+	(*parser)->cmd->comm_len = (*parser)->cmd_len;
+	(*parser)->cmd->cmd_type = 0;
+	ft_command_check((*parser)->cmd->comm_table[0], &(*parser)->cmd->path, &(*parser)->cmd->cmd_type);
+	(*parser)->executor_element = ft_lstnew((void * ) (*parser)->cmd);
+	ft_lstadd_back(&(g_access.parser2exec),  (*parser)->executor_element);
+}
+
 int	parser(void)
 {
 	t_parser *parser;
@@ -308,18 +321,7 @@ int	parser(void)
 		{
 			if(parser->cmd_len > 1)
 			{
-				parser->cmd = (t_command *)malloc(sizeof(t_command));
-				parser->cmd->comm_table = parser->cmd_line;
-				parser->cmd->path = NULL;
-				parser->cmd->index = parser->index_counter;
-				parser->cmd->comm_len = parser->cmd_len;
-				parser->cmd->cmd_type = 0;
-
-				ft_command_check(parser->cmd->comm_table[0], &parser->cmd->path, &parser->cmd->cmd_type);
-				if (FT_PARSER_COMMENT)
-					printf("Path if: %s\n", parser->cmd->path);
-				parser->executor_element = ft_lstnew((void * ) parser->cmd);
-				ft_lstadd_back(&(g_access.parser2exec), parser->executor_element);
+				ft_add_command(&parser);
 			}
 			else
 				ft_free_split(parser->cmd_line);
