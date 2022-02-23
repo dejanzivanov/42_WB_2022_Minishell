@@ -180,6 +180,19 @@ int ft_setup_parser(t_parser **parser)
 	return 0;
 }
 
+void ft_add_redirect_command(t_parser **parser)
+{
+	(*parser)->cmd_line_red[1] = ft_strdup(((t_word *)((*parser)->lex_element->content))->address);
+	(*parser)->cmd = (t_command *)malloc(sizeof(t_command));
+	(*parser)->cmd->comm_table = (*parser)->cmd_line_red;
+	(*parser)->cmd->path = NULL;
+	(*parser)->cmd->index = (*parser)->index_counter;
+	(*parser)->cmd->comm_len = 3;
+	(*parser)->cmd->cmd_type = FT_CMD_TYPE_REDIRECT;
+	(*parser)->executor_element = ft_lstnew((void * ) (*parser)->cmd);
+	ft_lstadd_back(&(g_access.parser2exec), (*parser)->executor_element);
+}
+
 int	parser(void)
 {
 	t_parser *parser;
@@ -236,15 +249,8 @@ int	parser(void)
 						error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
 						break;
 					}
-					parser->cmd_line_red[1] = ft_strdup(((t_word *)(parser->lex_element->content))->address);
-					parser->cmd = (t_command *)malloc(sizeof(t_command));
-					parser->cmd->comm_table = parser->cmd_line_red;
-					parser->cmd->path = NULL;
-					parser->cmd->index = parser->index_counter;
-					parser->cmd->comm_len = 3;
-					parser->cmd->cmd_type = FT_CMD_TYPE_REDIRECT;
-					parser->executor_element = ft_lstnew((void * ) parser->cmd);
-					ft_lstadd_back(&(g_access.parser2exec), parser->executor_element);
+					ft_add_redirect_command(&parser);
+
 				}
 				else  if (is_pipe(((t_word *)(parser->lex_element->content))->address))
 				{
