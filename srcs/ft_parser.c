@@ -319,6 +319,38 @@ void ft_pipe_limit_handler(t_parser **parser)
 	}
 }
 
+int ft_parser_itterator(t_parser **parser)
+{
+	if (((t_word *)((*parser)->lex_element->content))->type == FT_SPECIAL_CHAR_STRING)
+	{
+
+		if (is_redirect(((t_word *)((*parser)->lex_element->content))->address))
+		{
+			(*parser)->cmd_line_red = (char **)ft_calloc(3, sizeof(char *));
+			(*parser)->cmd_line_red[0] = ft_strdup(((t_word *)((*parser)->lex_element->content))->address);
+			(*parser)->lex_element = (*parser)->lex_element->next;
+			if(ft_parser_redirect_error_check(parser) == 2)
+				return (2);
+			if(ft_parser_last_redirect_element(parser) == 2)
+				return (2);
+			ft_add_redirect_command(parser);
+		}
+		else  if (is_pipe(((t_word *)((*parser)->lex_element->content))->address))
+		{
+			ft_pipe_handler(parser);
+			return (2) ;
+		}
+		else
+		{
+			ft_parser_error_handler(parser);
+			return (2) ;
+		}
+	}
+	else if (((t_word *)((*parser)->lex_element->content))->type == FT_STRING)
+		ft_string_handler((*parser)->lex_element, &(*parser)->cmd_line, &(*parser)->cmd_len);
+	return (0);
+}
+
 int	parser(void)
 {
 	t_parser *parser;
@@ -335,33 +367,9 @@ int	parser(void)
 		{
 			if (parser->lex_element == NULL)
 				break;
-			if (((t_word *)(parser->lex_element->content))->type == FT_SPECIAL_CHAR_STRING)
-			{
 
-				if (is_redirect(((t_word *)(parser->lex_element->content))->address))
-				{
-					parser->cmd_line_red = (char **)ft_calloc(3, sizeof(char *));
-					parser->cmd_line_red[0] = ft_strdup(((t_word *)(parser->lex_element->content))->address);
-					parser->lex_element = parser->lex_element->next;
-					if(ft_parser_redirect_error_check(&parser) == 2)
-						break;
-					if(ft_parser_last_redirect_element(&parser) == 2)
-						break;
-					ft_add_redirect_command(&parser);
-				}
-				else  if (is_pipe(((t_word *)(parser->lex_element->content))->address))
-				{
-					ft_pipe_handler(&parser);
-					break ;
-				}
-				else
-				{
-					ft_parser_error_handler(&parser);
-					break ;
-				}
-			}
-			else if (((t_word *)(parser->lex_element->content))->type == FT_STRING)
-				ft_string_handler(parser->lex_element, &parser->cmd_line, &parser->cmd_len);
+			if(ft_parser_itterator(&parser) == 2)
+				break;
 			if(ft_cmd_limit_handler(&parser) == 2)
 				break;
 			parser->lex_element = parser->lex_element->next;
