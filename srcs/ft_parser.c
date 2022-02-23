@@ -351,6 +351,34 @@ int ft_parser_itterator(t_parser **parser)
 	return (0);
 }
 
+
+void ft_parser_main_loop(t_parser *parser)
+{
+	while (parser->return_flag == 0)
+	{
+		if (parser->lex_element == NULL)
+			break;
+		if(ft_parser_itterator(&parser) == 2)
+			break;
+		if(ft_cmd_limit_handler(&parser) == 2)
+			break;
+		parser->lex_element = parser->lex_element->next;
+	}
+	parser->cmd_line = add_to_line(parser->cmd_line, NULL, &parser->cmd_len);
+	if (parser->return_flag == 0)
+	{
+		if(parser->cmd_len > 1)
+			ft_add_command(&parser);
+		else
+			ft_free_split(parser->cmd_line);
+		parser->index_counter++;
+		ft_pipe_limit_handler(&parser);
+	}
+	else
+		ft_free_split(parser->cmd_line);
+}
+
+
 int	parser(void)
 {
 	t_parser *parser;
@@ -363,29 +391,7 @@ int	parser(void)
 		parser->cmd_len = 0;
 		if (parser->lex_element == NULL || parser->return_flag != 0)
 			break;
-		while (parser->return_flag == 0)
-		{
-			if (parser->lex_element == NULL)
-				break;
-
-			if(ft_parser_itterator(&parser) == 2)
-				break;
-			if(ft_cmd_limit_handler(&parser) == 2)
-				break;
-			parser->lex_element = parser->lex_element->next;
-		}
-		parser->cmd_line = add_to_line(parser->cmd_line, NULL, &parser->cmd_len);
-		if (parser->return_flag == 0)
-		{
-			if(parser->cmd_len > 1)
-				ft_add_command(&parser);
-			else
-				ft_free_split(parser->cmd_line);
-			parser->index_counter++;
-			ft_pipe_limit_handler(&parser);
-		}
-		else
-			ft_free_split(parser->cmd_line);
+		ft_parser_main_loop(parser);
 	}
 	ret_val = ft_free_parse_struct(parser);
 	return (ret_val);
