@@ -206,6 +206,27 @@ void ft_add_command(t_parser **parser)
 	ft_lstadd_back(&(g_access.parser2exec),  (*parser)->executor_element);
 }
 
+int ft_parser_pipe_error_check(t_parser **parser)
+{
+	if((*parser)->lex_element == NULL)
+	{
+		(*parser)->return_flag = 2;
+		if (g_access.last_return != NULL)
+			free(g_access.last_return);
+		g_access.last_return = ft_itoa(2);
+		write(2, "minshe11: syntax error near unexpected token `newline'1\n", 58);
+		if ((*parser)->cmd_line_red[0] != NULL)
+		{
+			free((*parser)->cmd_line_red[0]);
+			(*parser)->cmd_line_red[0] = NULL;
+		}
+		free((*parser)->cmd_line_red);
+		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+		return (2);
+	}
+	return (0);
+}
+
 int	parser(void)
 {
 	t_parser *parser;
@@ -230,6 +251,8 @@ int	parser(void)
 					parser->cmd_line_red = (char **)ft_calloc(3, sizeof(char *));
 					parser->cmd_line_red[0] = ft_strdup(((t_word *)(parser->lex_element->content))->address);
 					parser->lex_element = parser->lex_element->next;
+					if(ft_parser_pipe_error_check(&parser) == 2)
+						break;
 					if(parser->lex_element == NULL)
 					{
 						parser->return_flag = 2;
@@ -320,9 +343,7 @@ int	parser(void)
 		if (parser->return_flag == 0)
 		{
 			if(parser->cmd_len > 1)
-			{
 				ft_add_command(&parser);
-			}
 			else
 				ft_free_split(parser->cmd_line);
 
