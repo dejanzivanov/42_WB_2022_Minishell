@@ -287,13 +287,44 @@ int ft_pipe_handler(t_parser **parser)
 	return (0);
 }
 
+void ft_parser_error_handler(t_parser **parser)
+{
+	(*parser)->return_flag = 2;
+	ft_set_lasts(NULL, 0, 2, 2);
+	write(2, "minishe11: syntax error near unexpected token'5\n", 49);
+	error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+}
+
+int ft_cmd_limit_handler(t_parser **parser)
+{
+	if ((*parser)->cmd_len > PARSER_TABLE_LEN_LIMIT)
+	{
+		(*parser)->return_flag = 2;
+		ft_set_lasts(NULL, 0, 2, 2);
+		write(2, "minishe11: argument overflow6\n", 31);
+		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+		return (2);
+	}
+	return (0);
+}
+
+void ft_pipe_limit_handler(t_parser **parser)
+{
+	if ((*parser)->index_counter > PIPE_LIMIT)
+	{
+		(*parser)->return_flag = 2;
+		ft_set_lasts(NULL, 0, 2, 2);
+		write(2, "minishe11: pipe limit reached7\n", 32);
+		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+	}
+}
+
 int	parser(void)
 {
 	t_parser *parser;
 	int ret_val;
 
 	ret_val = ft_setup_parser(&parser);
-
 	while (parser->return_flag == 0)
 	{
 		parser->cmd_line = 0;
@@ -317,7 +348,6 @@ int	parser(void)
 					if(ft_parser_last_redirect_element(&parser) == 2)
 						break;
 					ft_add_redirect_command(&parser);
-
 				}
 				else  if (is_pipe(((t_word *)(parser->lex_element->content))->address))
 				{
@@ -326,23 +356,14 @@ int	parser(void)
 				}
 				else
 				{
-					parser->return_flag = 2;
-					ft_set_lasts(NULL, 0, 2, 2);
-					write(2, "minishe11: syntax error near unexpected token'5\n", 49);
-					error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+					ft_parser_error_handler(&parser);
 					break ;
 				}
 			}
 			else if (((t_word *)(parser->lex_element->content))->type == FT_STRING)
 				ft_string_handler(parser->lex_element, &parser->cmd_line, &parser->cmd_len);
-			if (parser->cmd_len > PARSER_TABLE_LEN_LIMIT)
-			{
-				parser->return_flag = 2;
-				ft_set_lasts(NULL, 0, 2, 2);
-				write(2, "minishe11: argument overflow6\n", 31);
-				error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+			if(ft_cmd_limit_handler(&parser) == 2)
 				break;
-			}
 			parser->lex_element = parser->lex_element->next;
 		}
 		parser->cmd_line = add_to_line(parser->cmd_line, NULL, &parser->cmd_len);
@@ -352,15 +373,8 @@ int	parser(void)
 				ft_add_command(&parser);
 			else
 				ft_free_split(parser->cmd_line);
-
 			parser->index_counter++;
-			if (parser->index_counter > PIPE_LIMIT)
-			{
-				parser->return_flag = 2;
-				ft_set_lasts(NULL, 0, 2, 2);
-				write(2, "minishe11: pipe limit reached7\n", 32);
-				error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
-			}
+			ft_pipe_limit_handler(&parser);
 		}
 		else
 			ft_free_split(parser->cmd_line);
