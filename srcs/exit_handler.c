@@ -38,18 +38,11 @@ void	ft_free_split(char **split)
 // 	}
 // }
 
-void	ft_exit_on_error(t_list **cmd_list, char *error_msg)
-{
-	perror(error_msg);
-	ft_free_list(*cmd_list);
-	ft_close_fd();
-	exit(EXIT_FAILURE);
-}
-
 void	ft_exit_on_error2(char *error_msg)
 {
 	perror(error_msg);
 	ft_close_fd();
+	free_global();
 	exit(EXIT_FAILURE);
 }
 

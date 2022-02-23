@@ -1,4 +1,4 @@
 clear
 make re
 clear
-./minishell
+valgrind --leak-check=full ./minishell

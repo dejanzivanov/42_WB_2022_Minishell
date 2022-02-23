@@ -51,7 +51,7 @@ void	ft_free_parser(void *parser)
 {
 	int i;
 	t_command *cmd;
-
+	
 	i = 0;
 	cmd = (t_command *)parser;
     while (i < cmd->comm_len)
@@ -63,4 +63,5 @@ void	ft_free_parser(void *parser)
 		free(cmd->path);
 	free(cmd->comm_table);
 	free(parser);
+
 }
