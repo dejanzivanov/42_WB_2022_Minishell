@@ -177,7 +177,6 @@ void	ft_echo_printer(char **args, int len, int flag);
 // CD UTILS
 void	ft_update_create_env(char *env, char *value, pid_t pid);
 void	ft_update_PWD(void);
-char	*ft_handle_cd(char *address, t_list *ptr, pid_t pid);
 int		ft_cd_error_handler(char *str, pid_t pid, char **path, char **temp);
 void	ft_update_dir(char *arg1, char *path);
 void	ft_rtoa_path(char *rel_path, char **abs_path);

@@ -19,7 +19,7 @@ static int	ft_err_cd(char **args, int pid)
 	{
 		if (pid == 0)
 			write(2, "cd without an argument not \
-				permitted in this minishell.\n", 56);
+permitted in this minishell.\n", 57);
 		free(g_access.last_return);
 		g_access.last_return = ft_itoa(1);
 		ft_last_arg(args, pid);

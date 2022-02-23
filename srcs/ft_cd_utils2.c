@@ -35,3 +35,30 @@ void ft_set_current_path(char **current_path)
 	else
 		ft_set_global_pwd(current_path);
 }
+
+void ft_cd_simlink(char *abs_path, char *current_path, int pid, int mode)
+{
+	if (env_value_finder("PWD") == NULL || ft_strlen(env_value_finder("PWD")) == 0)
+		ft_update_create_env("OLDPWD", "", pid);
+	else
+		ft_update_create_env("OLDPWD", current_path, pid);
+	chdir(abs_path);
+	if (mode == 1)
+	{
+		if (g_access.dp != NULL)
+			free(g_access.dp);
+		g_access.dp = ft_strdup(abs_path);
+	}
+	else if (mode == 2)
+	{
+		if (g_access.dp != NULL)
+		{
+			free(g_access.dp);
+			g_access.dp = NULL;
+		}
+	}
+	if (g_access.pwd != NULL)
+		free(g_access.pwd);
+	g_access.pwd = ft_strdup(abs_path);
+	ft_update_env("PWD", abs_path);
+}

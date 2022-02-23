@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 02:11:57 by dzivanov          #+#    #+#             */
-/*   Updated: 2022/02/23 04:50:06 by dzivanov         ###   ########.fr       */
+/*   Updated: 2022/02/23 11:52:48 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,6 @@ int is_pipe(char *str)
 		return (1);
 	return (0);
 }
-
-
 
 void ft_parser_error_handler(char **cmd_line_red, int mod, t_struktur **struktur)
 {
@@ -400,7 +398,7 @@ int	parser(void)
 		{
 			if (struktur->lex_element == NULL)
 				break ;
-			if(ft_parser_itteration(&struktur))
+			if (ft_parser_itteration(&struktur))
 				break;
 			struktur->lex_element = struktur->lex_element->next;
 		}
