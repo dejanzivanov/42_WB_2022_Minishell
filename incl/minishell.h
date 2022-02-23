@@ -129,7 +129,7 @@ typedef struct s_env
 	char	*temp0;
 }	t_env;
 
-typedef struct s_struktur
+typedef struct s_parser
 {
 	int		index_counter;
 	t_list	*lex_element;
@@ -137,7 +137,7 @@ typedef struct s_struktur
 	char	**cmd_line_red;
 	int		cmd_len;
 	int		return_flag;
-} t_struktur;
+} t_parser;
 
 extern t_global g_access;
 
@@ -240,6 +240,10 @@ char	*ft_env_helper(t_env_var *temp_env);
 char	*ft_env_path(void);
 void	ft_comment_helper(int i, char **args);
 
+//PARSER UTILS
+// void ft_free_lex_list_handler(int return_flag);
+int ft_command_check(char *str, char **cmd_path, int *cmd_type);
+void ft_free_lex_list_handler(int return_flag, t_parser **parser);
 //UNSET UTILS
 int	ft_validity_setter(char **args, int i, int pid);
 int	ft_unsetter(char **args, int i, t_list *ptr,  int pid);
