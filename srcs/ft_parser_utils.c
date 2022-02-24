@@ -7,21 +7,20 @@
 
 void	ft_free_parser(void *parser)
 {
-	int i;
-	t_command *cmd;
+	int			i;
+	t_command	*cmd;
 
 	i = 0;
 	cmd = (t_command *)parser;
-    while (i < cmd->comm_len)
-    {
-        free(cmd->comm_table[i]);
-        i++;
-    }
+	while (i < cmd->comm_len)
+	{
+		free(cmd->comm_table[i]);
+		i++;
+	}
 	if (cmd->path != NULL)
 		free(cmd->path);
 	free(cmd->comm_table);
 	free(parser);
-
 }
 
 int	ft_free_parse_struct(t_parser *parser)

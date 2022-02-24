@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/24 18:00:49 by vdragomi          #+#    #+#             */
+/*   Updated: 2022/02/24 18:00:49 by vdragomi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 void	ft_initialize_fds(int *fd_temp)
@@ -253,8 +265,6 @@ int pipex(t_list *cmd_list, char** envp)
 		{
 			cmd_list = cmd_list->next;
 		}
-
-
 	}
 	int x = 0;
     int status;
@@ -268,7 +278,6 @@ int pipex(t_list *cmd_list, char** envp)
     }
 	dup2(fd_stream[0], STDIN_FILENO);
 	dup2(fd_stream[1], STDOUT_FILENO);
-	//printf("LINE FINSHED\n");
 	i = 0;
 	while( i <= last_index)
 	{
