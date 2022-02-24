@@ -2,11 +2,12 @@
 
 static int	ft_check_path(t_list **ptr)
 {
-	while(*ptr)
+	while (*ptr)
 	{
 		if (!ft_strncmp(((t_env_var *)((*ptr)->content))->name, "PATH=", 5))
 		{
-			if (((t_env_var *)((*ptr)->content))->value == NULL || ft_strlen(((t_env_var *)((*ptr)->content))->value) == 0)
+			if (((t_env_var *)((*ptr)->content))->value == NULL || \
+				ft_strlen(((t_env_var *)((*ptr)->content))->value) == 0)
 				return (0);
 			else
 				return (1);
@@ -16,21 +17,9 @@ static int	ft_check_path(t_list **ptr)
 	return (0);
 }
 
-void ft_get_PATH(void)
+static void	ft_path_setter(char *s, int fd, char **path)
 {
-	int fd;
-	char *s;
-	char *path;
-	t_list *ptr;
-	t_env_var *env_var;
 	char *temp;
-
-	ptr = g_access.env;
-	if (ft_check_path(&ptr) == 1)
-		return ;
-	fd = open("/etc/paths", O_RDONLY);
-	s = get_next_line(fd);
-	path = ft_strdup("");
 	while (s != NULL)
 	{
 		if (s[ft_strlen(s) - 1] == '\n')
@@ -38,16 +27,50 @@ void ft_get_PATH(void)
 		else
 			temp = ft_strdup(s);
 		free(s);
-		if (ft_strlen(path) != 0)
-			path = ft_strjoin_with_dfree(temp, ft_strjoin_with_scnd_free(":", path));
+		if (ft_strlen(*path) != 0)
+			*path = ft_strjoin_with_dfree(temp, ft_strjoin_with_scnd_free(":", *path));
 		else
 		{
-			path = ft_strdup(temp);
+			*path = ft_strdup(temp);
 			if (temp != NULL)
 				free(temp);
 		}
 		s = get_next_line(fd);
 	}
+}
+
+void ft_get_path(void)
+{
+	int fd;
+	char *s;
+	char *path;
+	t_list *ptr;
+	t_env_var *env_var;
+
+	ptr = g_access.env;
+	if (ft_check_path(&ptr) == 1)
+		return ;
+	fd = open("/etc/paths", O_RDONLY);
+	s = get_next_line(fd);
+	path = ft_strdup("");
+	ft_path_setter(s, fd, &path);
+	// while (s != NULL)
+	// {
+	// 	if (s[ft_strlen(s) - 1] == '\n')
+	// 		temp = ft_substr(s, 0, ft_strlen(s) - 1);
+	// 	else
+	// 		temp = ft_strdup(s);
+	// 	free(s);
+	// 	if (ft_strlen(path) != 0)
+	// 		path = ft_strjoin_with_dfree(temp, ft_strjoin_with_scnd_free(":", path));
+	// 	else
+	// 	{
+	// 		path = ft_strdup(temp);
+	// 		if (temp != NULL)
+	// 			free(temp);
+	// 	}
+	// 	s = get_next_line(fd);
+	// }
 	close(fd);
 	if (ptr != NULL)
 	{

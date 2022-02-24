@@ -272,13 +272,14 @@ char	*ft_strjoin_gnl(char *s1, char *s2, int j);
 size_t	ft_strlen_gnl(char *s);
 
 //ft_get_path_linux.c
-void	ft_get_PATH(void);
+void	ft_get_path(void);
 
 //GLOBAL UTILS
 void	ft_set_lasts(char **args, int pid, int lreturn, int mode);
 void	ft_last_arg(char **args, pid_t pid);
 void	ft_elem_copy(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy);
 t_list	*ft_copy_env(void);
+void	ft_checking(t_env_var **env_var, t_list **ptr_cpy);
 
 //MEMORY UTILS
 void ft_free_secure(void **s);

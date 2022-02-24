@@ -1,5 +1,15 @@
 #include "../incl/minishell.h"
 
+void	ft_checking(t_env_var **env_var, t_list **ptr_cpy)
+{
+	t_list	*tmp;
+
+	tmp = ft_lstnew(*env_var);
+	tmp->next = (*ptr_cpy)->next;
+	(*ptr_cpy)->next = tmp;
+	return ;
+}
+
 int	ft_check_existing_env(t_env_var **env_var)
 {
 	t_list	*ptr;

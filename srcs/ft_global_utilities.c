@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_global_utilities.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:59:20 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/21 21:30:51 by dzivanov         ###   ########.fr       */
+/*   Updated: 2022/02/24 10:18:56 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/minishell.h"
 
-static void ft_elem_copy1(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy)
+static void	\
+	ft_elem_copy1(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy)
 {
-	if (ft_strcmp((*env_var)->name, ((t_env_var *)((*ptr_cpy)->content))->name) < 0)
+	if (ft_strcmp((*env_var)->name, \
+		((t_env_var *)((*ptr_cpy)->content))->name) < 0)
 		ft_lstadd_front(env_cpy, ft_lstnew(*env_var));
 	else if (ft_strcmp((*env_var)->name, \
 		((t_env_var *)(ft_lstlast(*env_cpy)->content))->name) > 0)
@@ -23,35 +25,32 @@ static void ft_elem_copy1(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cp
 
 void	ft_elem_copy(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy)
 {
-	t_list *tmp;
-
-	tmp = NULL;
-	if (ft_strcmp((*env_var)->name, ((t_env_var *)((*ptr_cpy)->content))->name) < 0)
+	if (ft_strcmp((*env_var)->name, \
+		((t_env_var *)((*ptr_cpy)->content))->name) < 0)
 		ft_lstadd_front(env_cpy, ft_lstnew(*env_var));
-	else if (ft_strcmp((*env_var)->name, ((t_env_var *)(ft_lstlast(*env_cpy)->content))->name) > 0)
+	else if (ft_strcmp((*env_var)->name, \
+		((t_env_var *)(ft_lstlast(*env_cpy)->content))->name) > 0)
 		ft_lstadd_back(env_cpy, ft_lstnew(*env_var));
 	else
 	{
 		while ((*ptr_cpy)->next != NULL)
 		{
-			if (ft_strcmp((*env_var)->name, ((t_env_var *)((*ptr_cpy)->content))->name) > 0 && ft_strcmp((*env_var)->name, ((t_env_var *)((*ptr_cpy)->next->content))->name) < 0)
-			{
-				tmp =ft_lstnew(*env_var);
-				tmp->next = (*ptr_cpy)->next;
-				(*ptr_cpy)->next = tmp;
-				return ;
-			}
-			*ptr_cpy=(*ptr_cpy)->next;
+			if (ft_strcmp((*env_var)->name, \
+				((t_env_var *)((*ptr_cpy)->content))->name) > 0 && \
+			ft_strcmp((*env_var)->name, \
+				((t_env_var *)((*ptr_cpy)->next->content))->name) < 0)
+				ft_checking(env_var, ptr_cpy);
+			*ptr_cpy = (*ptr_cpy)->next;
 		}
 	}
 }
 
-t_list *ft_copy_env(void)
+t_list	*ft_copy_env(void)
 {
-	t_list *env_cpy;
-	t_list *ptr_env;
-	t_list *ptr_cpy;
-	t_env_var *env_var;
+	t_list		*env_cpy;
+	t_list		*ptr_env;
+	t_list		*ptr_cpy;
+	t_env_var	*env_var;
 
 	ptr_env = g_access.env;
 	env_cpy = NULL;
