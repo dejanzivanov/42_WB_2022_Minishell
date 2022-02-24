@@ -144,123 +144,129 @@ void	ft_execute_child(t_list *cmd_list, char **envp, pid_t pid)
 
 int pipex(t_list *cmd_list, char** envp)
 {
-	int fd_stream[2];
-	pid_t *pidt;
-	t_command *cmd;
-	t_list *cmd_list_temp;
-	int		**fd_docks;
-	int i;
-	int fd_in[2];
-	int fd_out[2];
-	int last_index;
-	int exit_value;
+	// int fd_stream[2];
+	// pid_t *pidt;
+	// t_command *cmd;
+	// t_list *cmd_list_temp;
+	// int		**fd_docks;
+	// int i;
+	// int fd_in[2];
+	// int fd_out[2];
+	// int last_index;
+	// int exit_value;
 
-	cmd_list_temp = NULL;
-	fd_stream[0] = 0;
-	fd_stream[1] = 0;
-	ft_initialize_fds(fd_stream);
-	last_index = ((t_command *)ft_lstlast(cmd_list)->content)->index;
-	cmd_list_temp = cmd_list;
-	fd_docks = ft_calloc(last_index + 1, sizeof(int *));
-	i = 0;
-	while(cmd_list_temp != NULL)
+	t_pipex *pipex;
+
+	pipex = ft_calloc(sizeof(t_pipex), 1);
+
+
+
+	pipex->cmd_list_temp = NULL;
+	pipex->fd_stream[0] = 0;
+	pipex->fd_stream[1] = 0;
+	ft_initialize_fds(pipex->fd_stream);
+	pipex->last_index = ((t_command *)ft_lstlast(cmd_list)->content)->index;
+	pipex->cmd_list_temp = cmd_list;
+	pipex->fd_docks = ft_calloc(pipex->last_index + 1, sizeof(int *));
+	pipex->i = 0;
+	while(pipex->cmd_list_temp != NULL)
 	{
-		cmd = (t_command *)cmd_list_temp->content;
-		if (!strcmp(cmd->comm_table[0], "<<") && cmd->cmd_type == FT_CMD_TYPE_REDIRECT)  //system function
+		pipex->cmd = (t_command *)pipex->cmd_list_temp->content;
+		if (!strcmp(pipex->cmd->comm_table[0], "<<") && pipex->cmd->cmd_type == FT_CMD_TYPE_REDIRECT)  //system function
 		{
-			if(fd_docks[cmd->index] != NULL)
+			if(pipex->fd_docks[pipex->cmd->index] != NULL)
 			{
-				close(fd_docks[cmd->index][0]);
-				free(fd_docks[cmd->index]);
+				close(pipex->fd_docks[pipex->cmd->index][0]);
+				free(pipex->fd_docks[pipex->cmd->index]);
 			}
-			fd_docks[cmd->index] = (int *)malloc(sizeof(int) * 2);
-			if (pipe(fd_docks[cmd->index]) == -1)
+			pipex->fd_docks[pipex->cmd->index] = (int *)malloc(sizeof(int) * 2);
+			if (pipe(pipex->fd_docks[pipex->cmd->index]) == -1)
 				ft_exit_on_error2("Pipe creation failed");
 			pid_t pid = fork();
-			if (!pid)
-				heredoc_child(fd_docks[cmd->index], fd_stream, cmd->comm_table[1], "> ");
+			if (!pid) //perform check on the here doc child or heredoc parent
+				heredoc_child(pipex->fd_docks[pipex->cmd->index], pipex->fd_stream, pipex->cmd->comm_table[1], "> ");
 			else
-				heredoc_parent(fd_docks[cmd->index], pid);
+				heredoc_parent(pipex->fd_docks[pipex->cmd->index], pid);
 		}
-		cmd_list_temp = cmd_list_temp->next;
+		pipex->cmd_list_temp = pipex->cmd_list_temp->next;
 	}
-	if (pipe(fd_out) == -1)
+	if (pipe(pipex->fd_out) == -1)
 			ft_exit_on_error2("Pipe creation failed in line 116");
-	fd_in[1] = fd_out[1];
-	pidt = ft_calloc(last_index + 1, sizeof(int *)); //system function
+	pipex->fd_in[1] = pipex->fd_out[1];
+	pipex->pidt = ft_calloc(pipex->last_index + 1, sizeof(int *)); //system function
 	while (cmd_list != NULL)
 	{
-		fd_in[0] = fd_out[0];
-		if (pipe(fd_out) == -1)
+		pipex->fd_in[0] = pipex->fd_out[0];
+		if (pipe(pipex->fd_out) == -1)
 			ft_exit_on_error2("Pipe creation failed in line 124");
-		pidt[i] = fork();
-		if (pidt[i] == -1)
+		pipex->pidt[pipex->i] = fork();
+		if (pipex->pidt[pipex->i] == -1)
 			ft_exit_on_error2("Pipe creation failed in line 127");
-		else if(pidt[i] == 0)
+		else if(pipex->pidt[pipex->i] == 0)
 		{
-			close(fd_out[0]);
-			if (i == 0)
-				if (dup2(fd_stream[0], fd_in[0]) == -1)
+			close(pipex->fd_out[0]);
+			if (pipex->i == 0)
+				if (dup2(pipex->fd_stream[0], pipex->fd_in[0]) == -1)
 					ft_exit_on_error2("File descriptor duplication failed 90");
-			if (i == last_index)
-				if (dup2(fd_stream[1], fd_out[1]) == -1)
-					ft_exit_on_error2("File descriptor duplication failed 90");
+			if (pipex->i == pipex->last_index)
+				if (dup2(pipex->fd_stream[1], pipex->fd_out[1]) == -1)
+					ft_exit_on_error2("File descriptor duplication failed 91");
 
-			if (dup2(fd_in[0], STDIN_FILENO) == -1)
-				ft_exit_on_error2("File descriptor duplication failed 90");
-			if (dup2(fd_out[1], STDOUT_FILENO) == -1)
+			if (dup2(pipex->fd_in[0], STDIN_FILENO) == -1)
+				ft_exit_on_error2("File descriptor duplication failed 92");
+			if (dup2(pipex->fd_out[1], STDOUT_FILENO) == -1)
 			{
 				printf("\nErrno is %d\n", errno);
-				ft_exit_on_error2("File descriptor duplication failedi 91");
+				ft_exit_on_error2("File descriptor duplication failedi 93");
 				printf("Errno is %d", errno);
 			}
-			ft_file_checker(&cmd_list, i, fd_in[0], fd_out[1], fd_docks[i]);
-			if(i == 0)
-				close(fd_in[1]);
-			i = 0;
-			while( i <= last_index)
+			ft_file_checker(&cmd_list, pipex->i, pipex->fd_in[0], pipex->fd_out[1], pipex->fd_docks[pipex->i]);
+			if(pipex->i == 0)
+				close(pipex->fd_in[1]);
+			pipex->i = 0;
+			while( pipex->i <= pipex->last_index)
 			{
-				if(fd_docks[i] != NULL)
-					free(fd_docks[i]);
-				i++;
+				if(pipex->fd_docks[pipex->i] != NULL)
+					free(pipex->fd_docks[pipex->i]);
+				pipex->i++;
 			}
-			if (fd_docks != NULL)
-				free(fd_docks);
-			int temp = pidt[i];
-			if (pidt != NULL)
-				free(pidt);
+			if (pipex->fd_docks != NULL)
+				free(pipex->fd_docks);
+			int temp = pipex->pidt[pipex->i];
+			if (pipex->pidt != NULL)
+				free(pipex->pidt);
 			ft_execute_child(cmd_list, envp, temp);
-			exit_value = ft_atoi(g_access.last_return);
+			pipex->exit_value = ft_atoi(g_access.last_return);
 			free_global();
 			close(STDERR_FILENO);
 			close(STDIN_FILENO);
 			close(STDOUT_FILENO);
-			exit(exit_value);
+			exit(pipex->exit_value);
 		}
 		else
 		{
-			if (i == 0)
-				close(fd_in[1]);
+			if (pipex->i == 0)
+				close(pipex->fd_in[1]);
 			while (cmd_list != NULL)
 			{
-				cmd = (t_command *)cmd_list->content;
-				if (cmd->cmd_type != FT_CMD_TYPE_REDIRECT)
+				pipex->cmd = (t_command *)cmd_list->content;
+				if (pipex->cmd->cmd_type != FT_CMD_TYPE_REDIRECT)
 					break;
 				cmd_list = cmd_list->next;
 			}
-			if (cmd->cmd_type == FT_CMD_TYPE_BUILT_IN)
-				ft_execve(cmd->comm_table, pidt[i]);
-			close(fd_in[0]);
-			close(fd_out[1]);
-			if (i == last_index)
+			if (pipex->cmd->cmd_type == FT_CMD_TYPE_BUILT_IN)
+				ft_execve(pipex->cmd->comm_table, pipex->pidt[pipex->i]);
+			close(pipex->fd_in[0]);
+			close(pipex->fd_out[1]);
+			if (pipex->i == pipex->last_index)
 			{
 				//char ccc;
 				//while (read(fd_out[0], &ccc, 1))
 				//	write(1, &ccc, 1);
-				close(fd_out[0]);
+				close(pipex->fd_out[0]);
 			}
 		}
-		i++;
+		pipex->i++;
 		if (cmd_list)
 		{
 			cmd_list = cmd_list->next;
@@ -268,26 +274,27 @@ int pipex(t_list *cmd_list, char** envp)
 	}
 	int x = 0;
     int status;
-    while (x <= last_index)
+    while (x <= pipex->last_index)
     {
-        waitpid(pidt[x], &status, 0);
+        waitpid(pipex->pidt[x], &status, 0);
 		if (g_access.last_return)
 			free(g_access.last_return);
         g_access.last_return = ft_itoa(WEXITSTATUS(status));
         x++;
     }
-	dup2(fd_stream[0], STDIN_FILENO);
-	dup2(fd_stream[1], STDOUT_FILENO);
-	i = 0;
-	while( i <= last_index)
+	dup2(pipex->fd_stream[0], STDIN_FILENO);
+	dup2(pipex->fd_stream[1], STDOUT_FILENO);
+	pipex->i = 0;
+	while( pipex->i <= pipex->last_index)
 	{
-		if(fd_docks[i] != NULL)
-			free(fd_docks[i]);
-		i++;
+		if(pipex->fd_docks[pipex->i] != NULL)
+			free(pipex->fd_docks[pipex->i]);
+		pipex->i++;
 	}
-	if (fd_docks != NULL)
-		free(fd_docks);
-	if (pidt != NULL)
-		free(pidt);
+	if (pipex->fd_docks != NULL)
+		free(pipex->fd_docks);
+	if (pipex->pidt != NULL)
+		free(pipex->pidt);
+	if (pipex != NULL)
 	return (0);
 }
