@@ -1,57 +1,15 @@
 #include "../incl/minishell.h"
 
-
-/*
-**  @brief Handels printing of t_command
-**  @param input: Void pointer to t_command
-*/
-static void	print_element_parser(void *input)
-{
-	t_command	*cmd;
-	int 		test_c;
-
-	cmd = (t_command *)input;
-	test_c = 0;
-	// printf("Len is %d\n", cmd->comm_len);
-
-	printf("Command type is:%d\n", cmd->cmd_type);
-	printf("Length       is %d\n", cmd->comm_len);
-	printf("Index       is %d\n", cmd->index);
-	printf("Table        is:\n");
-	while(test_c < (cmd->comm_len))
-	{
-		// printf("1\n");
-		if (cmd->comm_table[test_c] == NULL)
-			printf("0\n");
-		else
-			printf("%s\n", cmd->comm_table[test_c]);
-
-		// printf("2\n");
-		test_c++;
-	}
-	printf("*****************************************************\n");
-}
-
-
-/*
-**  @brief Prints out linked list of with t_command in content
-**  @param input: t_list pointer to first element in linked list
-*/
-void	print_list_parse(t_list *el)
-{
-	ft_lstiter(el, print_element_parser);
-}
-
-
 /*
 **  @brief Free linked list of with t_command in content
 **  @param input: t_list pointer to first element in linked list
 */
+
 void	ft_free_parser(void *parser)
 {
 	int i;
 	t_command *cmd;
-	
+
 	i = 0;
 	cmd = (t_command *)parser;
     while (i < cmd->comm_len)
@@ -64,4 +22,57 @@ void	ft_free_parser(void *parser)
 	free(cmd->comm_table);
 	free(parser);
 
+}
+
+int	ft_free_parse_struct(t_parser *parser)
+{
+	int	ret_value;
+
+	ret_value = parser->return_flag;
+	if (parser->return_flag == 0)
+	{
+		ft_free_lex_list(g_access.lexor2parser);
+		if (parser->lex_element)
+		{
+			free(parser->lex_element);
+			parser->lex_element = NULL;
+		}
+		g_access.lexor2parser = NULL;
+	}
+	if (parser != NULL)
+		free(parser);
+	parser = NULL;
+	return (ret_value);
+}
+
+void	ft_parser_error_handler(t_parser **parser)
+{
+	(*parser)->return_flag = 2;
+	ft_set_lasts(NULL, 0, 2, 2);
+	write(2, "minishe11: syntax error near unexpected token'5\n", 49);
+	error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+}
+
+int	ft_cmd_limit_handler(t_parser **parser)
+{
+	if ((*parser)->cmd_len > PARSER_TABLE_LEN_LIMIT)
+	{
+		(*parser)->return_flag = 2;
+		ft_set_lasts(NULL, 0, 2, 2);
+		write(2, "minishe11: argument overflow6\n", 31);
+		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+		return (2);
+	}
+	return (0);
+}
+
+void	ft_pipe_limit_handler(t_parser **parser)
+{
+	if ((*parser)->index_counter > PIPE_LIMIT)
+	{
+		(*parser)->return_flag = 2;
+		ft_set_lasts(NULL, 0, 2, 2);
+		write(2, "minishe11: pipe limit reached7\n", 32);
+		error_fun(&(g_access.parser2exec), &(g_access.lexor2parser));
+	}
 }

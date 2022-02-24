@@ -197,6 +197,35 @@ void	ft_env_check(char **args);
 void	ft_setup_env_check(t_env **env);
 char	*ft_getenv(char *str);
 char	*env_var_formater(char *env_var);
+//parser env utils
+void	ft_print_parser_error(char *str);
+void	ft_clear_env_check(char **str, char *temp_path);
+int	ft_env_itter(char **temp_path, char ***split, char ***cmd_path);
+void	ft_setting_path_and_split(char **path, char ***split);
+int	ft_access_check(char ***cmd_path, char **str);
+
+
+//parser utils
+int	path_finder(char *str, char **cmd_path);
+int	ft_command_check(char *str, char **cmd_path, int *cmd_type);
+void	ft_free_lex_list(t_list *head);
+char	**add_to_line(char **line, char *new_str, int *line_len);
+
+void	ft_str_ha(t_list *lex_element, char	***cmd_line, int *cmd_len);
+int	is_redirect(char *str);
+int	is_pipe(char *str);
+int	ft_setup_parser(t_parser **parser);
+void	ft_add_redirect_command(t_parser **parser);
+void	ft_add_command(t_parser **parser);
+int	ft_parser_redirect_error_check(t_parser **parser);
+int	ft_parser_last_redirect_element(t_parser **parser);
+int	ft_parser_redirect_handler(t_parser **parser);
+int	ft_pipe_handler(t_parser **parser);
+int	ft_free_parse_struct(t_parser *parser);
+void	ft_parser_error_handler(t_parser **parser);
+int	ft_cmd_limit_handler(t_parser **parser);
+void	ft_pipe_limit_handler(t_parser **parser);
+
 
 // EXIT UTILS
 int		ft_digit_check(char *argv);
