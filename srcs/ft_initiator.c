@@ -97,8 +97,6 @@ void	ft_create_envlist(char **envp)
 	if (ft_check_symlink(env_value_finder("PWD"), NULL, 0) \
 	|| ft_check_symlink((g_access.pwd), NULL, 0))
 		g_access.dp = ft_strdup(env_value_finder("PWD"));
-	if (g_access.home == NULL)
-		ft_get_home();
 }
 
 void	ft_initiator(char **envp, char *executable)
