@@ -1,6 +1,5 @@
 #include "../incl/minishell.h"
 
-
 static int	ft_check_pth(t_list **ptr)
 {
 	while ((*ptr)->next != NULL)
@@ -18,9 +17,9 @@ static int	ft_check_pth(t_list **ptr)
 	return (0);
 }
 
-static void ft_path_set(char *s, t_list *ptr)
+static void	ft_path_set(char *s, t_list *ptr)
 {
-	t_env_var *env_var;
+	t_env_var	*env_var;
 
 	if (!ft_strncmp(s, "PATH=", 5))
 	{
@@ -28,7 +27,8 @@ static void ft_path_set(char *s, t_list *ptr)
 		{
 			if (((t_env_var *)(ptr->content))->value != NULL)
 				free(((t_env_var *)(ptr->content))->value);
-			((t_env_var *)(ptr->content))->value = ft_substr(s, 6, ft_strlen(s) - 6 - 1);
+			((t_env_var *)(ptr->content))->value = \
+				ft_substr(s, 6, ft_strlen(s) - 6 - 1);
 		}
 		else
 		{
@@ -40,12 +40,11 @@ static void ft_path_set(char *s, t_list *ptr)
 	}
 }
 
-void ft_get_path(void)
+void	ft_get_path(void)
 {
-	int fd;
-	char *s;
-	t_list *ptr;
-
+	int		fd;
+	char	*s;
+	t_list	*ptr;
 
 	ptr = g_access.env;
 	if (ft_check_pth(&ptr) == 1)
@@ -64,4 +63,3 @@ void ft_get_path(void)
 	}
 	close(fd);
 }
-
