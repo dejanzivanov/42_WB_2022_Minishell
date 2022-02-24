@@ -6,13 +6,13 @@
 /*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:28:43 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/24 14:50:06 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:20:32 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/minishell.h"
 
-void ft_symlink_initiate_free(struct stat **buf, \
+void	ft_symlink_initiate_free(struct stat **buf, \
 	char **path_substr, char **path_substr_free, int mode)
 {
 	if (mode == 1)

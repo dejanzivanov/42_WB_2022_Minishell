@@ -6,13 +6,13 @@
 /*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:47:05 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/24 17:47:05 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:22:16 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/minishell.h"
 
-void ft_free_secure(void **s)
+void	ft_free_secure(void **s)
 {
 	if (*s != NULL)
 		free(*s);

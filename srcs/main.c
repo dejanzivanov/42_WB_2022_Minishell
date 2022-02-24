@@ -23,6 +23,7 @@ static int	ft_ctrld_handler(void)
 	if (g_access.read_line2lexor == NULL)
 	{
 		write(2, "exit\n", 5);
+		ft_set_lasts(NULL, 0, 0, 2);
 		return (1);
 	}
 	return (0);

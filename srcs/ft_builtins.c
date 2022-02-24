@@ -1,10 +1,16 @@
-#include "../incl/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_builtins.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/24 18:13:48 by vdragomi          #+#    #+#             */
+/*   Updated: 2022/02/24 18:13:48 by vdragomi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// 3:30 PM] Margarete M: Ctrl-D on bash writes an "exit"
-// [3:36 PM] Margarete M: and last_return needs to be passt after leaving minishell like this
-// [3:38 PM] Vlad D: I see that now
-// 3:50 PM] Margarete M: and ctrl-c and ctrl-d should also print a new line
-// 3:50 PM] Margarete M: and ctrl-c and ctrl-d should also print a new line
+#include "../incl/minishell.h"
 
 /**
 	 @brief Bultin command: env.

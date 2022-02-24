@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_get_path_mac.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/24 18:18:26 by vdragomi          #+#    #+#             */
+/*   Updated: 2022/02/24 18:18:26 by vdragomi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 static int	ft_check_path(t_list **ptr)
@@ -37,8 +49,9 @@ static void	ft_path_setter(char *s, int fd, char **path)
 		}
 		s = get_next_line(fd);
 	}
+	//COMMENT  for norminetting @ iMacs
 }
-
+//COMMENT for norminetting @ iMacs
 void ft_get_path(void)
 {
 	int fd;
