@@ -1,9 +1,9 @@
 #include "../incl/minishell.h"
 
-void ft_get_home(void)
+void	ft_get_home(void)
 {
-	int fd = open("/etc/passwd", O_RDONLY);
-	char *s = get_next_line(fd);
+	int		fd;
+	char	*s;
 	int i;
 	t_list *ptr;
 	char *uname;
@@ -12,6 +12,8 @@ void ft_get_home(void)
 	int len;
 	int home_flag;
 
+	fd = open("/etc/passwd", O_RDONLY);
+ 	s = get_next_line(fd);
 	ptr = g_access.env;
 	uname = NULL;
 	home_flag = 0;
@@ -45,15 +47,13 @@ void ft_get_home(void)
 			}
 			i++;
 		}
-		if (g_access.home != NULL) // necessary to break the outer while loop; alternative would be a return
+		if (g_access.home != NULL)
 			break;
 		if (s != NULL)
 		{
 			free(s);
 			s = get_next_line(fd);
 		}
-		
-		
 	}
 	if (!home_flag)
 	{
@@ -64,7 +64,6 @@ void ft_get_home(void)
 	
 	}
 	close(fd);
-
 }
 
 void prerror(char *msg)

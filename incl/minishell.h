@@ -142,6 +142,11 @@ typedef struct s_parser
 
 } t_parser;
 
+typedef struct s_utils
+{
+
+} t_utils;
+
 extern t_global g_access;
 
 void    ft_free_split(char **split);
