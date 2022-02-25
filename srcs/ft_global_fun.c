@@ -36,5 +36,5 @@ void	free_global(void)
 	ft_free_secure((void *)&g_access.home);
 	ft_free_secure((void *)&g_access.pwd);
 	ft_free_secure((void *)&g_access.dp);
-	rl_clear_history();
+	// rl_clear_history();
 }
