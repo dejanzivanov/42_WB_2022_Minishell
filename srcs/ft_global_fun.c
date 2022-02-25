@@ -12,6 +12,12 @@
 
 #include "../incl/minishell.h"
 
+/*
+**	rl_clear_history(); is commented in case that evaluator is on iMac
+**	because iMac readline does not contain this function withn itself.
+**	Add on line 45 if needed depending on the evaluators platform.
+*/
+
 void	free_global(void)
 {
 	if (g_access.env)
@@ -36,5 +42,4 @@ void	free_global(void)
 	ft_free_secure((void *)&g_access.home);
 	ft_free_secure((void *)&g_access.pwd);
 	ft_free_secure((void *)&g_access.dp);
-	// rl_clear_history();
 }

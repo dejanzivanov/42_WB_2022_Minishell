@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_signal_handler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
+/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:19:48 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/24 18:19:48 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/25 17:32:28 by dzivanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 **
 **	CTRL + C = SIGINT
 **	CTRL + \ = SIGQUIT
+**
+**	In the case that evaluator has Linux rl_replace_line("", 0); function
+**	should be added after line 33 because iMacs do not have this in their
+**	readline library, and it will make compiler errors.
+**
 */
 
 void	ft_sigint_handler(int sig)
@@ -27,7 +32,6 @@ void	ft_sigint_handler(int sig)
 	{
 		printf("\b\b    ");
 		printf("\n");
-		// rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}

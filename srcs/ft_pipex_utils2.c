@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipex_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 16:59:17 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/25 16:59:27 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/25 17:29:09 by dzivanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipex_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 16:53:24 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/25 16:57:43 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/25 17:28:58 by dzivanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	in_redirect(char *filename, int type)
 	}
 	return (fd);
 }
+
 void	ft_infile_handler(int *fd_docks, int *fd_infile, t_command *cmd)
 {
 	if (fd_docks != NULL)
