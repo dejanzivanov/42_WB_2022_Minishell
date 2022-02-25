@@ -141,7 +141,6 @@ void	ft_execute_child(t_list *cmd_list, char **envp, pid_t pid)
 	}
 }
 
-
 int pipex(t_list *cmd_list, char** envp)
 {
 	int fd_stream[2];

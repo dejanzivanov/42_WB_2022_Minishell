@@ -31,7 +31,8 @@ static int	ft_check_path(t_list **ptr)
 
 static void	ft_path_setter(char *s, int fd, char **path)
 {
-	char *temp;
+	char	*temp;
+
 	while (s != NULL)
 	{
 		if (s[ft_strlen(s) - 1] == '\n')
@@ -40,7 +41,8 @@ static void	ft_path_setter(char *s, int fd, char **path)
 			temp = ft_strdup(s);
 		free(s);
 		if (ft_strlen(*path) != 0)
-			*path = ft_strjoin_with_dfree(temp, ft_strjoin_with_scnd_free(":", *path));
+			*path = \
+		ft_strjoin_with_dfree(temp, ft_strjoin_with_scnd_free(":", *path));
 		else
 		{
 			*path = ft_strdup(temp);
@@ -49,16 +51,32 @@ static void	ft_path_setter(char *s, int fd, char **path)
 		}
 		s = get_next_line(fd);
 	}
-	//COMMENT  for norminetting @ iMacs
 }
-//COMMENT for norminetting @ iMacs
-void ft_get_path(void)
+
+static void	ft_path_adder(char *path, t_list **ptr, t_env_var **env_var)
 {
-	int fd;
-	char *s;
-	char *path;
-	t_list *ptr;
-	t_env_var *env_var;
+	if (*ptr != NULL)
+	{
+		if (((t_env_var *)((*ptr)->content))->value != NULL)
+			free(((t_env_var *)((*ptr)->content))->value);
+		((t_env_var *)((*ptr)->content))->value = ft_strdup(path);
+	}
+	else
+	{
+		*env_var = (t_env_var *)malloc(sizeof(t_env_var));
+		(*env_var)->name = ft_strdup("PATH=");
+		(*env_var)->value = ft_strdup(path);
+		ft_lstadd_back(&(g_access.env), ft_lstnew(*env_var));
+	}
+}
+
+void	ft_get_path(void)
+{
+	int			fd;
+	char		*s;
+	char		*path;
+	t_list		*ptr;
+	t_env_var	*env_var;
 
 	ptr = g_access.env;
 	if (ft_check_path(&ptr) == 1)
@@ -67,36 +85,7 @@ void ft_get_path(void)
 	s = get_next_line(fd);
 	path = ft_strdup("");
 	ft_path_setter(s, fd, &path);
-	// while (s != NULL)
-	// {
-	// 	if (s[ft_strlen(s) - 1] == '\n')
-	// 		temp = ft_substr(s, 0, ft_strlen(s) - 1);
-	// 	else
-	// 		temp = ft_strdup(s);
-	// 	free(s);
-	// 	if (ft_strlen(path) != 0)
-	// 		path = ft_strjoin_with_dfree(temp, ft_strjoin_with_scnd_free(":", path));
-	// 	else
-	// 	{
-	// 		path = ft_strdup(temp);
-	// 		if (temp != NULL)
-	// 			free(temp);
-	// 	}
-	// 	s = get_next_line(fd);
-	// }
 	close(fd);
-	if (ptr != NULL)
-	{
-		if (((t_env_var *)(ptr->content))->value != NULL)
-			free(((t_env_var *)(ptr->content))->value);
-		((t_env_var *)(ptr->content))->value = ft_strdup(path);
-	}
-	else
-	{
-		env_var = (t_env_var *)malloc(sizeof(t_env_var));
-		env_var->name = ft_strdup("PATH=");
-		env_var->value = ft_strdup(path);
-		ft_lstadd_back(&(g_access.env), ft_lstnew(env_var));
-	}
+	ft_path_adder(path, &ptr, &env_var);
 	free(path);
 }
