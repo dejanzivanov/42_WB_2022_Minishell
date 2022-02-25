@@ -290,10 +290,14 @@ int					q_handler(char *str, char **current_str, char q_char);
 void				errorfun(void);
 void				ft_lex_string_reminder_handler(char **current_str, \
 char *args, int begining, int i);
-int					ft_lex_double_quote_handler(char **current_str, char *args, int begining, int i);
-int					ft_lex_single_quote_handler(char **current_str, char *args, int begining, int i);
-void				ft_lex_operand_handler(char **current_str, char *args, int begining, int i);
-void				ft_lex_space_handler(char **current_str, char *args, int i, int begining);
+int					ft_lex_double_quote_handler(char **current_str, char *args, \
+int begining, int i);
+int					ft_lex_single_quote_handler(char **current_str, char *args, \
+int begining, int i);
+void				ft_lex_operand_handler(char **current_str, char *args, \
+int begining, int i);
+void				ft_lex_space_handler(char **current_str, char *args, \
+int i, int begining);
 
 // LEXOR UTILS
 void				ft_free_parser(void *parser);
@@ -311,8 +315,8 @@ void				error_fun(t_list **list, t_list **lexor_list);
 
 //UNSET UTILS
 int					ft_validity_setter(char **args, int i, int pid);
-int					ft_unsetter(char **args, int i, t_list *ptr,  int pid);
-int					ft_unset_engine(char **args, int i, t_list *ptr,  int pid);
+int					ft_unsetter(char **args, int i, t_list *ptr, int pid);
+int					ft_unset_engine(char **args, int i, t_list *ptr, int pid);
 int					ft_free_parse_struct(t_parser *parser);
 
 // UTILS
@@ -327,7 +331,8 @@ int					get_next_line_prev(int fd, char **line);
 char				*get_next_line(int fd);
 void				ft_memmove_till_newline(char *l_to_m);
 int					ft_return_prep(int bytes, char **tmp, char **line, int fd);
-int					ft_check_array_input(char **tmp, char **line, char *buffer, int fd);
+int					ft_check_array_input(char **tmp, char **line, char *buffer, \
+int fd);
 void				*ft_memmove(void *dest, const void *src, size_t n);
 char				*ft_strchr_gnl(const char *s, int c);
 char				*ft_strjoin_gnl(char *s1, char *s2, int j);
@@ -339,7 +344,8 @@ void				ft_get_path(void);
 //GLOBAL UTILS
 void				ft_set_lasts(char **args, int pid, int lreturn, int mode);
 void				ft_last_arg(char **args, pid_t pid);
-void				ft_elem_copy(t_env_var **env_var, t_list **env_cpy, t_list **ptr_cpy);
+void				ft_elem_copy(t_env_var **env_var, t_list **env_cpy, \
+t_list **ptr_cpy);
 t_list				*ft_copy_env(void);
 void				ft_checking(t_env_var **env_var, t_list **ptr_cpy);
 
@@ -350,19 +356,21 @@ void				ft_free_secure(void **s);
 void				ft_initialize_fds(int *fd_temp);
 int					out_redirect(char *filename, int type);
 int					in_redirect(char *filename, int type);
-void				ft_infile_handler(int *fd_docks, int *fd_infile, t_command *cmd);
-void				ft_re_attach_docs(int **fd_docks, int *fd_infile, int *fd_outfile);
+void				ft_infile_handler(int *fd_docks, int *fd_infile, \
+t_command *cmd);
+void				ft_re_attach_docs(int **fd_docks, int *fd_infile, \
+int *fd_outfile);
 void				ft_append_handler(int *fd_outfile, t_command *cmd);
 void				ft_in_infile_handler(int **fd_docks, int *fd_infile);
 void				ft_outfile_handler(int *fd_outfile, t_command *cmd);
-int					ft_file_itterator(t_command *cmd, int *fd_outfile, int *fd_infile, int **fd_docks);
+int					ft_file_itterator(t_command *cmd, int *fd_outfile, \
+int *fd_infile, int **fd_docks);
 void				ft_file_checker(t_list **cmd_list, t_pipex **pipex);
 void				ft_execute_child(t_list *cmd_list, char **envp, pid_t pid);
 void				ft_free_pipex_and_reattach_pipes(t_pipex **pipex);
 void				ft_pipe_attachment(t_pipex **pipex);
 void				ft_pipex_exit(t_pipex **pipex);
 void				ft_here_doc_handler(t_pipex **pipex);
-
 
 typedef struct s_content
 {
@@ -371,17 +379,16 @@ typedef struct s_content
 	int		index;
 }	t_content;
 
-
 void				print_list_parse(t_list *el); //rm?
 void				ft_close_fd(void);
 void				ft_free_split(char **split);
-
 void				ft_exit_on_error(t_list **cmd_list, char *error_msg);
 void				ft_exit_on_invalid_cmd(char **path_list, t_list **cmd_list, \
 t_content *content, t_list *elem);
 
 /*helper.c*/
-void				ft_make_cmd_list(char **argv, char **envp, int argc, t_list **cmd_list);
+void				ft_make_cmd_list(char **argv, char **envp, int argc, \
+t_list **cmd_list);
 char				*ft_get_cmd_path(const char *cmd, char **path_list);
 char				**ft_split_path(char **env);
 char				*ft_strjoin_with_free(char *s1, char const *s2);
@@ -391,19 +398,24 @@ char				*ft_strjoin_with_scnd_free(char *s1, char *s2);
 /*piping.c*/
 void				ft_pipex(t_list *cmd_list, char **envp);
 void				ft_initialize_fds(int *fd_temp);
-void				ft_execute_child_process(t_list *cmd_list, char **envp, int *fd, int *fd_stream);
-void				ft_execute_parent_process(int *fd, t_list **cmd_list, pid_t pid);
-void				ft_execute_last_cmd(int *fd, t_list **cmd_list, pid_t pid, int *fd_temp);
+void				ft_execute_child_process(t_list *cmd_list, char **envp, \
+int *fd, int *fd_stream);
+void				ft_execute_parent_process(int *fd, t_list **cmd_list, \
+pid_t pid);
+void				ft_execute_last_cmd(int *fd, t_list **cmd_list, pid_t pid, \
+int *fd_temp);
 
 /*pipex.c*/
 void				ft_check_input_file(char *filename, char *outputfile);
 void				ft_check_output_file(const char *filename);
-char				*ft_check_cmd_path(char **path, char **split, int j, const char *cmd);
+char				*ft_check_cmd_path(char **path, char **split, int j, \
+const char *cmd);
 void				ft_exit_on_error2(char *error_msg);
 int					pipex(t_list *cmd, char **envp);
 
 /*ft_heredoc.c*/
-void				heredoc_child(int* fd, int *fd_stream, char *stop_name, char *keyword);
+void				heredoc_child(int *fd, int *fd_stream, char *stop_name, \
+char *keyword);
 void				heredoc_parent(int *fd, pid_t pid);
 void				ft_signal_setup(void);
 
