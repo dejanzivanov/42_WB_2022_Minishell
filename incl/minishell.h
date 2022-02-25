@@ -330,7 +330,18 @@ void	ft_checking(t_env_var **env_var, t_list **ptr_cpy);
 void ft_free_secure(void **s);
 
 
-//pipex
+//pipex utils
+void	ft_initialize_fds(int *fd_temp);
+int		out_redirect(char *filename, int type);
+int		in_redirect(char *filename, int type);
+void	ft_infile_handler(int *fd_docks, int *fd_infile, t_command *cmd);
+void	ft_re_attach_docs(int **fd_docks, int *fd_infile, int *fd_outfile);
+void	ft_append_handler(int *fd_outfile, t_command *cmd);
+void	ft_in_infile_handler(int **fd_docks, int *fd_infile);
+void	ft_outfile_handler(int *fd_outfile, t_command *cmd);
+int		ft_file_itterator(t_command *cmd, int *fd_outfile, int *fd_infile, int **fd_docks);
+void	ft_file_checker(t_list **cmd_list, t_pipex **pipex);
+
 
 typedef struct s_content
 {

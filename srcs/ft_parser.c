@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:16:14 by dzivanov          #+#    #+#             */
-/*   Updated: 2022/02/24 17:35:32 by dzivanov         ###   ########.fr       */
+/*   Updated: 2022/02/25 16:53:36 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
