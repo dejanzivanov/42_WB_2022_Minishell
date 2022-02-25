@@ -59,7 +59,7 @@ int	minishell_exit(char **args, pid_t pid)
 	counter = ((t_command *)ft_lstlast(g_access.parser2exec)->content)->index;
 	if (counter == 0 && pid != 0)
 		return (ft_parent_exiter(pid, args));
-	else
+	else if (pid == 0)
 		ft_child_exiter(args);
 	return (0);
 }
