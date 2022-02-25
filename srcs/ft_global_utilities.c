@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_global_utilities.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdragomi <vdragomi@students.42wolfsburg.de +#+  +:+       +#+        */
+/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:59:20 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/24 10:18:56 by vdragomi         ###   ########.fr       */
+/*   Updated: 2022/02/25 11:20:54 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ void	ft_last_arg(char **args, pid_t pid)
 
 void	ft_set_lasts(char **args, int pid, int lreturn, int mode)
 {
-	if (!(mode == 1 || mode == 2 || mode == 3))
-		write(2, "ERROR ON SET LAST\n", 18);
 	if (mode == 1)
 		ft_last_arg(args, pid);
 	else if (mode == 2)
