@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dzivanov <dzivanov@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: vdragomi <vdragomi@42student.wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:00:49 by vdragomi          #+#    #+#             */
-/*   Updated: 2022/02/25 17:12:48 by dzivanov         ###   ########.fr       */
+/*   Updated: 2022/02/25 18:14:46 by vdragomi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

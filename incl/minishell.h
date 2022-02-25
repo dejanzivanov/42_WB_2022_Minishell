@@ -14,18 +14,18 @@
 # define MINISHELL_H
 
 # include "../libft/incl/libft.h"
-# include <stdio.h>
+// # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
-# include <stdlib.h>
+// # include <stdlib.h>
 # include <errno.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <stdarg.h>
+// # include <string.h>
+// # include <sys/wait.h>
+// # include <stdarg.h>
 # include <fcntl.h>
-# include <sys/types.h>
-# include <signal.h>
+// # include <sys/types.h>
+// # include <signal.h>
 # include <dirent.h>
 # include <sys/stat.h>
 
