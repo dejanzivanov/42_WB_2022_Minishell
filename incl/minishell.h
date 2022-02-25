@@ -142,6 +142,20 @@ typedef struct s_parser
 
 } t_parser;
 
+typedef struct s_pipex
+{
+	int fd_stream[2];
+	pid_t *pidt;
+	t_command *cmd;
+	t_list *cmd_list_temp;
+	int		**fd_docks;
+	int i;
+	int fd_in[2];
+	int fd_out[2];
+	int last_index;
+	int exit_value;
+} t_pipex;
+
 extern t_global g_access;
 
 void    ft_free_split(char **split);
